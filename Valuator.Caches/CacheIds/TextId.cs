@@ -1,4 +1,6 @@
-﻿namespace Valuator.Models;
+﻿using Caches.Interfaces;
+
+namespace Valuator.Caches.CacheIds;
 
 public class TextId
 {
@@ -10,4 +12,6 @@ public class TextId
     }
 
     public override string ToString() => Value;
+
+    public CacheKey ToCacheKey() => new( Value );
 }

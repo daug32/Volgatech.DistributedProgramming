@@ -1,6 +1,8 @@
-﻿namespace Valuator.Models;
+﻿using Caches.Interfaces;
 
-public class RankId 
+namespace Valuator.Caches.CacheIds;
+
+public class RankId
 {
     public readonly string Value;
 
@@ -10,4 +12,6 @@ public class RankId
     }
 
     public override string ToString() => Value;
+
+    public CacheKey ToCacheKey() => new( Value );
 }

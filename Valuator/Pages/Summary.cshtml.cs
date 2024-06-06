@@ -1,8 +1,7 @@
 ﻿using System.Globalization;
 using Caches.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Extensions;
-using Valuator.Models;
+using Valuator.Caches.CacheIds;
 
 namespace Valuator.Pages;
 

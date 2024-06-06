@@ -1,9 +1,10 @@
 using System.Globalization;
 using Caches.Interfaces;
+using MessageBus;
+using MessageBus.Integration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Extensions;
-using Valuator.Models;
+using Valuator.Caches.CacheIds;
 
 namespace Valuator.Pages;
 
@@ -11,11 +12,13 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly ICacheService _cacheService;
+    private readonly IMessagePublisher _messagePublisher;
 
-    public IndexModel( ILogger<IndexModel> logger, ICacheService cacheService )
+    public IndexModel( ILogger<IndexModel> logger, ICacheService cacheService, IMessagePublisher messagePublisher )
     {
         _logger = logger;
         _cacheService = cacheService;
+        _messagePublisher = messagePublisher;
     }
 
     public void OnGet()
@@ -27,22 +30,13 @@ public class IndexModel : PageModel
         _logger.LogDebug( text );
 
         var id = IndexModelId.New();
-        double rank = CalculateRank( text );
         int similarity = CalculateSimilarity( text );
+        _messagePublisher.Publish( Messages.CalculateRankMessage, id.ToString() );
 
         _cacheService.Add( new TextId( id ).ToCacheKey(), text );
         _cacheService.Add( new SimilarityId( id ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
-        _cacheService.Add( new RankId( id ).ToCacheKey(), rank.ToString( CultureInfo.InvariantCulture ) );
 
         return Redirect( $"summary?id={id}" );
-    }
-
-    private double CalculateRank( string text )
-    {
-        int notAlphabetSymbolsNumber = text.Count( symbol => !Char.IsLetter( symbol ) );
-        double rank = notAlphabetSymbolsNumber / ( double )text.Length;
-
-        return rank;
     }
 
     private int CalculateSimilarity( string text )

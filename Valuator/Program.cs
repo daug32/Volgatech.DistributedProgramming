@@ -1,4 +1,5 @@
 using Caches.Redis;
+using MessageBus;
 
 namespace Valuator;
 
@@ -10,6 +11,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+        builder.Services.AddNatsMessageBus();
         builder.Services.AddRedisCache( builder.Configuration.GetRedisConfiguration() );
 
         WebApplication app = builder.Build();

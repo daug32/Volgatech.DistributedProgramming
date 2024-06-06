@@ -1,4 +1,7 @@
-﻿namespace Valuator.Models;
+﻿using Caches.Interfaces;
+using FluentAssertions;
+
+namespace Valuator.Caches.CacheIds;
 
 public class IndexModelId
 {
@@ -12,13 +15,10 @@ public class IndexModelId
 
     public IndexModelId( string value )
     {
-        if ( String.IsNullOrWhiteSpace( value ) )
-        {
-            throw new ArgumentException( $"Value must not be null or empty" );
-        }
-        
-        Value = value;
+        Value = value.ThrowIfNullOrEmpty();
     }
 
     public override string ToString() => Value;
+
+    public CacheKey ToCacheKey() => new( Value );
 }
