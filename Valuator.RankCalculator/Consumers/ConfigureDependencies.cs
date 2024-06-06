@@ -6,6 +6,6 @@ public static class ConfigureDependencies
 {
     public static void AddConsumers( this IConsumerRegistrator registrator )
     {
-        registrator.AddConsumerForMessage<CalculateRankMessageConsumer>( Messages.Messages.CalculateRankMessage );
+        registrator.AddConsumerForMessage<CalculateRankMessageConsumer>( CalculateRankMessageConsumer.MessageId );
     }
 }

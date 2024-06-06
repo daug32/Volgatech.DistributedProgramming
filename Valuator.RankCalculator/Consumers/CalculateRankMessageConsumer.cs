@@ -3,20 +3,27 @@ using Caches.Interfaces;
 using MessageBus.Interfaces;
 using Microsoft.Extensions.Logging;
 using Valuator.Caches.CacheIds;
+using Valuator.MessageBus;
+using Valuator.MessageBus.DTOs;
 
 namespace Valuator.RankCalculator.Consumers;
 
 public class CalculateRankMessageConsumer : IMessageConsumer
 {
-    private readonly ICacheService _cacheService;
     private readonly ILogger _logger;
+    private readonly ICacheService _cacheService;
+    private readonly IMessagePublisher _messagePublisher;
+
+    public static MessageId MessageId => Messages.CalculateRankRequest;
 
     public CalculateRankMessageConsumer(
         ICacheService cacheService,
-        ILogger<CalculateRankMessageConsumer> logger )
+        ILogger<CalculateRankMessageConsumer> logger,
+        IMessagePublisher messagePublisher )
     {
         _cacheService = cacheService;
         _logger = logger;
+        _messagePublisher = messagePublisher;
     }
 
     public void Consume( string messageContent )
@@ -24,8 +31,9 @@ public class CalculateRankMessageConsumer : IMessageConsumer
         _logger.LogDebug( $"Consuming message. Consumer: {nameof( CalculateRankMessageConsumer )}, Message: {messageContent}" );
 
         var indexModelId = new IndexModelId( messageContent );
+        var textId = new TextId( indexModelId );
 
-        string? text = _cacheService.Get( new TextId( indexModelId ).ToCacheKey() );
+        string? text = _cacheService.Get( textId.ToCacheKey() );
         if ( text is null )
         {
             return;
@@ -35,6 +43,12 @@ public class CalculateRankMessageConsumer : IMessageConsumer
         _cacheService.Add(
             new RankId( indexModelId ).ToCacheKey(),
             rank.ToString( CultureInfo.InvariantCulture ) );
+        
+        _messagePublisher.Publish( Messages.RankCalculatedNotification, new RankCalculatedNotificationDto
+        {
+             Rank = rank,
+             TextId = textId.ToString()
+        } );
     }
 
     private double CalculateRank( string text )

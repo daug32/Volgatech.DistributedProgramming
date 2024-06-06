@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json;
 using MessageBus.Interfaces;
 using NATS.Client;
 
@@ -11,6 +12,11 @@ internal class MessagePublisher : IMessagePublisher
     public MessagePublisher( IConnection connection )
     {
         _connection = connection;
+    }
+
+    public void Publish<T>( MessageId messageId, T content )
+    {
+        Publish( messageId, JsonSerializer.Serialize( content ) );
     }
 
     public void Publish( MessageId messageId, string content )

@@ -4,6 +4,8 @@ using MessageBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Caches.CacheIds;
+using Valuator.MessageBus;
+using Valuator.MessageBus.DTOs;
 
 namespace Valuator.Pages;
 
@@ -28,14 +30,22 @@ public class IndexModel : PageModel
     {
         _logger.LogDebug( text );
 
-        var id = IndexModelId.New();
+        var indexedModelId = IndexModelId.New();
+        
+        var textId = new TextId( indexedModelId );
+        _cacheService.Add( textId.ToCacheKey(), text );
+            
+        _messagePublisher.Publish( Messages.CalculateRankRequest, indexedModelId.ToString() );
+
         int similarity = CalculateSimilarity( text );
-        _messagePublisher.Publish( Messages.Messages.CalculateRankMessage, id.ToString() );
+        _cacheService.Add( new SimilarityId( indexedModelId ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
+        _messagePublisher.Publish( Messages.SimilarityCalculatedNotification, new SimilarityCalculatedNotificationDto
+        {
+            Similarity = similarity,
+            TextId = textId.ToString()
+        } );
 
-        _cacheService.Add( new TextId( id ).ToCacheKey(), text );
-        _cacheService.Add( new SimilarityId( id ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
-
-        return Redirect( $"summary?id={id}" );
+        return Redirect( $"summary?id={indexedModelId}" );
     }
 
     private int CalculateSimilarity( string text )
