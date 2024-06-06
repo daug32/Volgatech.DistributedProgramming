@@ -1,5 +1,6 @@
 ﻿using MessageBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using NATS.Client;
 
 namespace MessageBus.Nats;
 
@@ -9,15 +10,22 @@ public static class ConfigureDependencies
         this IServiceCollection services,
         Action<IConsumerRegistrator>? registerConsumers = null )
     {
+        // Register consumers
         var consumerRegistrator = new ConsumerRegistrator( services );
         if ( registerConsumers is not null )
         {
             registerConsumers( consumerRegistrator );
         }
-        services.AddScoped( _ => consumerRegistrator );
+        services.AddTransient( _ => consumerRegistrator );
+        
+        // Register consumers handler
+        services.AddTransient<IConsumersHandler, ConsumersHandler>();
 
-        services.AddScoped<IConsumersHandler, ConsumersHandler>();
-        services.AddScoped<IMessagePublisher, MessagePublisher>();
+        // Register publisher
+        services.AddTransient<IMessagePublisher, MessagePublisher>();
+
+        // Register NATS connection 
+        services.AddTransient<IConnection>( _ => new ConnectionFactory().CreateConnection() );
 
         return services;
     }

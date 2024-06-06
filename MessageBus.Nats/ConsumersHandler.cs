@@ -12,15 +12,15 @@ public class ConsumersHandler : IConsumersHandler, IDisposable
     private readonly ConsumerRegistrator _consumerRegistrator;
     private readonly IServiceProvider _serviceProvider;
 
-    public ConsumersHandler( ConsumerRegistrator consumerRegistrator, IServiceProvider serviceProvider )
+    public ConsumersHandler( ConsumerRegistrator consumerRegistrator, IServiceProvider serviceProvider, IConnection connection )
     {
         _serviceProvider = serviceProvider;
+        _connection = connection;
         _consumerRegistrator = consumerRegistrator;
     }
 
     public void Start()
     {
-        _connection = new ConnectionFactory().CreateConnection();
         _consumerSubscriptions = BuildConsumerSubscriptions();
         
         foreach ( ConsumerSubscription consumerSubscription in _consumerSubscriptions )
@@ -43,8 +43,6 @@ public class ConsumersHandler : IConsumersHandler, IDisposable
         {
             consumerSubscription.Subscription.Dispose();
         }
-        
-        _connection.Dispose();
     }
 
     private List<ConsumerSubscription> BuildConsumerSubscriptions()

@@ -8,9 +8,9 @@ internal class MessagePublisher : IMessagePublisher
 {
     private readonly IConnection _connection;
 
-    public MessagePublisher()
+    public MessagePublisher( IConnection connection )
     {
-        _connection = new ConnectionFactory().CreateConnection();
+        _connection = connection;
     }
 
     public void Publish( MessageId messageId, string content )
