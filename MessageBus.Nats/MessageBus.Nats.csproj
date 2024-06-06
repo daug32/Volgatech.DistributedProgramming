@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FluentAssertions\FluentAssertions.csproj" />
+      <ProjectReference Include="..\MessageBus.Interfaces\MessageBus.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>

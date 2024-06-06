@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-namespace MessageBus;
+namespace MessageBus.Interfaces;
 
 public class MessageId
 {

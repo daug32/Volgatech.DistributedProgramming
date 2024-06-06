@@ -1,4 +1,4 @@
-﻿namespace MessageBus;
+﻿namespace MessageBus.Interfaces;
 
 public interface IMessagePublisher
 {

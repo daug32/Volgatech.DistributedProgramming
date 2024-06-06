@@ -1,7 +1,6 @@
 using System.Globalization;
 using Caches.Interfaces;
-using MessageBus;
-using MessageBus.Integration;
+using MessageBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Caches.CacheIds;
@@ -31,7 +30,7 @@ public class IndexModel : PageModel
 
         var id = IndexModelId.New();
         int similarity = CalculateSimilarity( text );
-        _messagePublisher.Publish( Messages.CalculateRankMessage, id.ToString() );
+        _messagePublisher.Publish( Messages.Messages.CalculateRankMessage, id.ToString() );
 
         _cacheService.Add( new TextId( id ).ToCacheKey(), text );
         _cacheService.Add( new SimilarityId( id ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
@@ -47,6 +46,8 @@ public class IndexModel : PageModel
             .Get( key )
             !.Equals( text, StringComparison.InvariantCultureIgnoreCase ) );
 
-        return hasSameText ? 1 : 0;
+        return hasSameText
+            ? 1
+            : 0;
     }
 }

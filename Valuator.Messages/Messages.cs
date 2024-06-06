@@ -1,4 +1,6 @@
-﻿namespace MessageBus.Integration;
+﻿using MessageBus.Interfaces;
+
+namespace Valuator.Messages;
 
 public static class Messages
 {

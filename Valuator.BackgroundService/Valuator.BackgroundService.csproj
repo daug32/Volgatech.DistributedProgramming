@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
       <PackageReference Include="NATS.Client" Version="1.1.5" />
@@ -18,17 +19,9 @@
       <ProjectReference Include="..\Caches.Redis\Caches.Redis.csproj" />
       <ProjectReference Include="..\FluentAssertions\FluentAssertions.csproj" />
       <ProjectReference Include="..\Infrastructure.Common\Infrastructure.Common.csproj" />
-      <ProjectReference Include="..\MessageBus\MessageBus.csproj" />
+      <ProjectReference Include="..\MessageBus.Nats\MessageBus.Nats.csproj" />
       <ProjectReference Include="..\Valuator.Caches\Valuator.Caches.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Hosting">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.Extensions.Hosting.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\Valuator.Messages\Valuator.Messages.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,8 @@
 ﻿using System.Text;
+using MessageBus.Interfaces;
 using NATS.Client;
 
-namespace MessageBus.Implementation;
+namespace MessageBus.Nats;
 
 internal class MessagePublisher : IMessagePublisher
 {

@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
 using Caches.Interfaces;
-using MessageBus;
-using MessageBus.Integration;
+using MessageBus.Interfaces;
 using Microsoft.Extensions.Logging;
 using Valuator.Caches.CacheIds;
 
 namespace Valuator.BackgroundService.Consumers;
 
-public class CalculateRankMessageConsumer : BaseMessageConsumer
+public class CalculateRankMessageConsumer : IMessageConsumer
 {
     private readonly ICacheService _cacheService;
     private readonly ILogger _logger;
@@ -15,15 +14,14 @@ public class CalculateRankMessageConsumer : BaseMessageConsumer
     public CalculateRankMessageConsumer(
         ICacheService cacheService,
         ILogger<CalculateRankMessageConsumer> logger )
-        : base( Messages.CalculateRankMessage )
     {
         _cacheService = cacheService;
         _logger = logger;
     }
 
-    protected override void Consume( string messageContent )
+    public void Consume( string messageContent )
     {
-        _logger.LogDebug( $"Consuming message. MessageId: {MessageId}, Message: {messageContent}" );
+        _logger.LogDebug( $"Consuming message. Consumer: {nameof( CalculateRankMessageConsumer )}, Message: {messageContent}" );
 
         var indexModelId = new IndexModelId( messageContent );
 

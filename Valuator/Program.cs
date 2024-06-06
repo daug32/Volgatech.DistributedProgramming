@@ -1,5 +1,5 @@
 using Caches.Redis;
-using MessageBus;
+using MessageBus.Nats;
 
 namespace Valuator;
 

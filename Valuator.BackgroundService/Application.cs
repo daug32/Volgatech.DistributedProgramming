@@ -1,26 +1,26 @@
-﻿using Valuator.BackgroundService.Consumers;
+﻿using MessageBus.Interfaces;
 
 namespace Valuator.BackgroundService;
 
 public class Application : Microsoft.Extensions.Hosting.BackgroundService
 {
-    private readonly CalculateRankMessageConsumer _calculateRankMessageConsumer;
-
-    public Application( CalculateRankMessageConsumer calculateRankMessageConsumer )
+    private readonly IConsumersHandler _consumersHandler;
+    
+    public Application( IConsumersHandler consumersHandler )
     {
-        _calculateRankMessageConsumer = calculateRankMessageConsumer;
+        _consumersHandler = consumersHandler;
     }
 
     protected override Task ExecuteAsync( CancellationToken token )
     {
-        _calculateRankMessageConsumer.Start();
+        _consumersHandler.Start();
 
         while ( !token.IsCancellationRequested )
         {
         }
         
-        _calculateRankMessageConsumer.Stop();
-
+        _consumersHandler.Stop();
+        
         return Task.CompletedTask;
     }
 }
