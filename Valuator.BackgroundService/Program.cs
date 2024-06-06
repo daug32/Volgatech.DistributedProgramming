@@ -26,9 +26,7 @@ public class Program
         serviceCollection
             .AddLogging( x => x.ClearProviders().AddConsole() )
             .AddRedisCache( configuration.GetRedisConfiguration() )
-            .AddNatsMessageBus( builder => builder
-                .AddConsumerForMessage<CalculateRankMessageConsumer>( Messages.Messages.CalculateRankMessage ) )
-            .AddConsumers()
+            .AddNatsMessageBus( consumerRegistrator => consumerRegistrator.AddConsumers() )
             .AddHostedService<Application>();
 
         return serviceCollection;
