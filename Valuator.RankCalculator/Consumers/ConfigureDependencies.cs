@@ -1,6 +1,6 @@
 ﻿using MessageBus.Interfaces;
 
-namespace Valuator.BackgroundService.Consumers;
+namespace Valuator.RankCalculator.Consumers;
 
 public static class ConfigureDependencies
 {

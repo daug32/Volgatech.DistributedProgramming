@@ -1,6 +1,6 @@
 ﻿using MessageBus.Interfaces;
 
-namespace Valuator.BackgroundService;
+namespace Valuator.RankCalculator;
 
 public class Application : Microsoft.Extensions.Hosting.BackgroundService
 {

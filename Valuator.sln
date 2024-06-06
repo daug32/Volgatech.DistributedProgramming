@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{9C9BEB92-C5C2-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{0BED60F7-BF95-40C9-B08E-334F6955BE79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valuator.BackgroundService", "Valuator.BackgroundService\Valuator.BackgroundService.csproj", "{C48C81D0-EC79-4591-A2A4-98E8ED97ED9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valuator.RankCalculator", "Valuator.RankCalculator\Valuator.RankCalculator.csproj", "{C48C81D0-EC79-4591-A2A4-98E8ED97ED9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Common", "Infrastructure.Common\Infrastructure.Common.csproj", "{EDBBF2B1-475A-4D94-B1AC-03B269CCC997}"
 EndProject

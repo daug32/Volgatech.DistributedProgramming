@@ -4,7 +4,7 @@ using MessageBus.Interfaces;
 using Microsoft.Extensions.Logging;
 using Valuator.Caches.CacheIds;
 
-namespace Valuator.BackgroundService.Consumers;
+namespace Valuator.RankCalculator.Consumers;
 
 public class CalculateRankMessageConsumer : IMessageConsumer
 {
