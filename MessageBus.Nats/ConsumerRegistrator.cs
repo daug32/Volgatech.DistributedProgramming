@@ -2,17 +2,11 @@
 
 namespace MessageBus.Nats;
 
-public interface IConsumerRegistrator
-{
-    ConsumerRegistrator AddConsumerForMessage<TConsumer>( MessageId messageId )
-        where TConsumer : IMessageConsumer;
-}
-
 public class ConsumerRegistrator : IConsumerRegistrator
 {
     private readonly Dictionary<MessageId, Type> _consumers = new();
 
-    public ConsumerRegistrator AddConsumerForMessage<TConsumer>( MessageId messageId )
+    public IConsumerRegistrator AddConsumerForMessage<TConsumer>( MessageId messageId )
         where TConsumer : IMessageConsumer 
     {
         if ( _consumers.ContainsKey( messageId ) )

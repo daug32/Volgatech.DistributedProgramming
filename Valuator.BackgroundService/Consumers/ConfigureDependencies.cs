@@ -1,5 +1,4 @@
-﻿using MessageBus.Nats;
-using Microsoft.Extensions.DependencyInjection;
+﻿using MessageBus.Interfaces;
 
 namespace Valuator.BackgroundService.Consumers;
 
