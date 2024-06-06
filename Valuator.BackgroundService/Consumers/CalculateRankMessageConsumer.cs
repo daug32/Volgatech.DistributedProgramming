@@ -1,10 +1,8 @@
 ﻿using System.Globalization;
-using System.Text;
 using Caches.Interfaces;
 using MessageBus;
 using MessageBus.Integration;
 using Microsoft.Extensions.Logging;
-using NATS.Client;
 using Valuator.Caches.CacheIds;
 
 namespace Valuator.BackgroundService.Consumers;
