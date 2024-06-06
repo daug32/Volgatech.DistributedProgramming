@@ -9,7 +9,7 @@ public static class ConfigureDependencies
         this IServiceCollection services,
         Action<IConsumerRegistrator>? registerConsumers = null )
     {
-        var consumerRegistrator = new ConsumerRegistrator();
+        var consumerRegistrator = new ConsumerRegistrator( services );
         if ( registerConsumers is not null )
         {
             registerConsumers( consumerRegistrator );
