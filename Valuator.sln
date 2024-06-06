@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caches.Interfaces", "Caches
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caches.Redis", "Caches.Redis\Caches.Redis.csproj", "{C174BED4-7B27-48EB-9192-21BA263B7023}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E5C2A23D-982D-44FA-8A6F-713269DC4CCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{C174BED4-7B27-48EB-9192-21BA263B7023}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C174BED4-7B27-48EB-9192-21BA263B7023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C174BED4-7B27-48EB-9192-21BA263B7023}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F1ABA2B3-AD02-4988-88A1-12C0609B2317} = {E5C2A23D-982D-44FA-8A6F-713269DC4CCC}
+		{C174BED4-7B27-48EB-9192-21BA263B7023} = {E5C2A23D-982D-44FA-8A6F-713269DC4CCC}
 	EndGlobalSection
 EndGlobal

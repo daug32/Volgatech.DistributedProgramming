@@ -2,6 +2,8 @@ using System.Globalization;
 using Caches.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Valuator.Extensions;
+using Valuator.Models;
 
 namespace Valuator.Pages;
 
@@ -24,23 +26,22 @@ public class IndexModel : PageModel
     {
         _logger.LogDebug( text );
 
-        var id = Guid.NewGuid().ToString();
-
-        float rank = CalculateRank( text );
+        var id = IndexModelId.New();
+        double rank = CalculateRank( text );
         int similarity = CalculateSimilarity( text );
-        
-        _cacheService.Add( new CacheKey( $"TEXT-{id}" ), text );
-        _cacheService.Add( new CacheKey( $"SIMILARITY-{id}" ), similarity.ToString( CultureInfo.InvariantCulture ) );
-        _cacheService.Add( new CacheKey( $"RANK-{id}" ), rank.ToString( CultureInfo.InvariantCulture ) );
+
+        _cacheService.Add( new TextId( id ).ToCacheKey(), text );
+        _cacheService.Add( new SimilarityId( id ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
+        _cacheService.Add( new RankId( id ).ToCacheKey(), rank.ToString( CultureInfo.InvariantCulture ) );
 
         return Redirect( $"summary?id={id}" );
     }
 
-    private float CalculateRank( string text )
+    private double CalculateRank( string text )
     {
         int notAlphabetSymbolsNumber = text.Count( symbol => !Char.IsLetter( symbol ) );
-        float rank = notAlphabetSymbolsNumber / ( float )text.Length;
-        
+        double rank = notAlphabetSymbolsNumber / ( double )text.Length;
+
         return rank;
     }
 
@@ -48,7 +49,9 @@ public class IndexModel : PageModel
     {
         var keys = _cacheService.GetAllKeys();
 
-        bool hasSameText = keys.Any( key => _cacheService.Get( key ).Equals( text, StringComparison.InvariantCultureIgnoreCase ) );
+        bool hasSameText = keys.Any( key => _cacheService
+            .Get( key )
+            !.Equals( text, StringComparison.InvariantCultureIgnoreCase ) );
 
         return hasSameText ? 1 : 0;
     }

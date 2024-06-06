@@ -24,9 +24,9 @@ internal class RedisCacheService : ICacheService
         _database.StringSet( key.Value, value );
     }
 
-    public string Get( CacheKey key )
+    public string? Get( CacheKey key )
     {
-        return _database.StringGet( key.Value )!;
+        return _database.StringGet( key.Value );
     }
 
     public List<CacheKey> GetAllKeys()
