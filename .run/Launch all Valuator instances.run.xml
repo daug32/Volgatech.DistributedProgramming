@@ -1,0 +1,7 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Launch all Valuator instances" type="CompoundRunConfigurationType">
+    <toRun name="Valuator: instance_1" type="LaunchSettings" />
+    <toRun name="Valuator: instance_2" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>
