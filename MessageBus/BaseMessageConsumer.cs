@@ -1,4 +1,5 @@
-﻿using NATS.Client;
+﻿using System.Text;
+using NATS.Client;
 
 namespace MessageBus;
 
@@ -18,7 +19,11 @@ public abstract class BaseMessageConsumer : IDisposable
             .SubscribeAsync( 
                 messageId.Subject, 
                 messageId.Queue,
-                ( sender, args ) => Consume( args ) );
+                ( sender, args ) =>
+                {
+                    string message = Encoding.UTF8.GetString( args.Message.Data );
+                    Consume( message );
+                } );
     }
 
     public void Start()
@@ -31,7 +36,7 @@ public abstract class BaseMessageConsumer : IDisposable
         _subscription.Unsubscribe();
     }
 
-    protected abstract void Consume( MsgHandlerEventArgs args );
+    protected abstract void Consume( string messageContent );
 
     public void Dispose()
     {

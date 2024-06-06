@@ -23,12 +23,11 @@ public class CalculateRankMessageConsumer : BaseMessageConsumer
         _logger = logger;
     }
 
-    protected override void Consume( MsgHandlerEventArgs args )
+    protected override void Consume( string messageContent )
     {
-        string message = Encoding.UTF8.GetString( args.Message.Data );
-        _logger.LogDebug( $"Consuming message. MessageId: {MessageId}, Message: {message}" );
+        _logger.LogDebug( $"Consuming message. MessageId: {MessageId}, Message: {messageContent}" );
 
-        var indexModelId = new IndexModelId( message );
+        var indexModelId = new IndexModelId( messageContent );
 
         string? text = _cacheService.Get( new TextId( indexModelId ).ToCacheKey() );
         if ( text is null )
