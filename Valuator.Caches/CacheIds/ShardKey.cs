@@ -2,13 +2,13 @@
 
 namespace Valuator.Caches.CacheIds;
 
-public class ShardId
+public class ShardKey
 {
     public readonly string Value;
 
-    public ShardId( IndexModelId indexedModelId )
+    public ShardKey( TextId textId )
     {
-        Value = $"SHARD-{indexedModelId}";
+        Value = $"SHARD-{textId}";
     }
 
     public override string ToString() => Value;

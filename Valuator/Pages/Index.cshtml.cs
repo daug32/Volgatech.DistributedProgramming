@@ -1,4 +1,5 @@
 using System.Globalization;
+using Caches.Extensions;
 using Caches.Interfaces;
 using MessageBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -33,24 +34,27 @@ public class IndexModel : PageModel
     public IActionResult OnPost( string text, int countryIndex )
     {
         _logger.LogDebug( text );
-        ICacheService cacheService = GetCacheService( Countries[countryIndex].ToRegion() );
+        var region = Countries[countryIndex].ToRegion();
+        ICacheService cacheService = GetCacheService( region );
 
         var indexedModelId = IndexModelId.New();
-
+        
         var textId = new TextId( indexedModelId );
+
+        var shardId = new ShardKey( textId ).ToCacheKey();
+        var shardRegion = region.ToString();
+        cacheService.Add( shardId, shardRegion );
+        
+        var similarityId = new SimilarityId( indexedModelId );
         int similarity = CalculateSimilarity( text, cacheService );
-
-        cacheService.Add(
-            textId.ToCacheKey(),
-            text );
-
-        cacheService.Add(
-            new SimilarityId( indexedModelId ).ToCacheKey(),
-            similarity.ToString( CultureInfo.InvariantCulture ) );
+        cacheService.Add( similarityId.ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
+        
+        cacheService.Add( textId.ToCacheKey(), text );
 
         _messagePublisher.Publish( Messages.CalculateRankRequest, indexedModelId.ToString() );
 
-        _messagePublisher.Publish( Messages.SimilarityCalculatedNotification,
+        _messagePublisher.Publish( 
+            Messages.SimilarityCalculatedNotification,
             new SimilarityCalculatedNotificationDto
             {
                 Similarity = similarity,

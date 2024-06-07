@@ -33,8 +33,9 @@ public class CalculateRankMessageConsumer : IMessageConsumer
 
         var indexModelId = new IndexModelId( messageContent );
         var textId = new TextId( indexModelId );
+        var sharKey = new ShardKey( textId );
         
-        ICacheService? cacheService = _shardSearcher.Find( textId.ToCacheKey() );
+        ICacheService? cacheService = _shardSearcher.Find( sharKey.ToCacheKey() );
         if ( cacheService is null )
         {
             return;

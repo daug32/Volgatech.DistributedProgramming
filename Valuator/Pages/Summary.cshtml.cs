@@ -27,7 +27,7 @@ public class SummaryModel : PageModel
         var indexedModelId = new IndexModelId( id );
         var textId = new TextId( indexedModelId );
 
-        ICacheService? cacheService = _shardSearcher.Find( textId.ToCacheKey() );
+        ICacheService? cacheService = _shardSearcher.Find( new ShardKey( textId ).ToCacheKey() );
         if ( cacheService is null )
         {
             return;
