@@ -22,11 +22,11 @@ public class SimilarityCalculatedConsumer : IMessageConsumer
     {
         _logger.LogDebug( $"Consuming message. Consumer: {nameof( SimilarityCalculatedConsumer )}, Message: {messageContent}" );
 
-        RankCalculatedNotificationDto? rankCalculatedMessageDto = JsonSerializer.Deserialize<RankCalculatedNotificationDto>( messageContent );
+        SimilarityCalculatedNotificationDto? similarityCalculatedMessageDto = JsonSerializer.Deserialize<SimilarityCalculatedNotificationDto>( messageContent );
         
         Console.WriteLine( 
-            $"Событие: {nameof( RankCalculatedNotificationDto)}\n"
-            + $"\tId текста: \"{rankCalculatedMessageDto?.TextId}\"\n"
-            + $"\tRank: \"{rankCalculatedMessageDto?.Rank}\"" );
+            $"Событие: {nameof( SimilarityCalculatedNotificationDto)}\n"
+            + $"\tId текста: \"{similarityCalculatedMessageDto?.TextId}\"\n"
+            + $"\tSimilarity: \"{similarityCalculatedMessageDto?.Similarity}\"" );
     }
 }

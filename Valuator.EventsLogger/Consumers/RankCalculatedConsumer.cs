@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using MessageBus.Interfaces;
 using Microsoft.Extensions.Logging;
-using Valuator.Caches.CacheIds;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
 
@@ -22,11 +21,11 @@ public class RankCalculatedConsumer : IMessageConsumer
     {
         _logger.LogDebug( $"Consuming message. Consumer: {nameof( SimilarityCalculatedConsumer )}, Message: {messageContent}" );
 
-        SimilarityCalculatedNotificationDto? similarityCalculatedMessageDto = JsonSerializer.Deserialize<SimilarityCalculatedNotificationDto>( messageContent );
+        RankCalculatedNotificationDto? rankCalculatedMessageDto = JsonSerializer.Deserialize<RankCalculatedNotificationDto>( messageContent );
         
         Console.WriteLine( 
-            $"Событие: {nameof( SimilarityCalculatedNotificationDto)}\n"
-            + $"\tId текста: \"{similarityCalculatedMessageDto?.TextId}\"\n"
-            + $"\tSimilarity: \"{similarityCalculatedMessageDto?.Similarity}\"" );
+            $"Событие: {nameof( RankCalculatedNotificationDto)}\n"
+            + $"\tId текста: \"{rankCalculatedMessageDto?.TextId}\"\n"
+            + $"\tRank: \"{rankCalculatedMessageDto?.Rank}\"" );
     }
 }
