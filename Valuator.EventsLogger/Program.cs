@@ -1,10 +1,11 @@
 ﻿using Caches.Redis;
 using Infrastructure.Common;
 using MessageBus.Nats;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Valuator.Caches.ShardSearching;
+using Valuator.Domain.Regions;
 using Valuator.EventsLogger.Consumers;
 
 namespace Valuator.EventsLogger;
@@ -15,20 +16,42 @@ public class Program
     {
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration( builder => builder.AddCommonConfiguration() )
-            .ConfigureServices( ( context, collection ) => ConfigureServices( collection, context.Configuration ) )
+            .ConfigureServices( ( context, collection ) => ConfigureServices( collection ) )
             .Build();
 
         return host.StartAsync();
     }
 
-    private static IServiceCollection ConfigureServices( IServiceCollection serviceCollection, IConfiguration configuration )
+    private static IServiceCollection ConfigureServices( IServiceCollection serviceCollection )
     {
         serviceCollection
             .AddLogging( x => x.ClearProviders().AddConsole() )
-            .AddRedisCache( configuration.GetRedisConfiguration() )
+            .AddRedisCache( GetRedsShardsConfigurations() )
+            .AddShardSearching()
             .AddNatsMessageBus( consumerRegistrator => consumerRegistrator.AddConsumers() )
             .AddHostedService<Application>();
 
         return serviceCollection;
+    }
+
+    private static RedisConfiguration GetRedsShardsConfigurations()
+    {
+        List<string> allRegions = Region
+            .GetAllRegions()
+            .Select( x => x.Value )
+            .ToList();
+
+        Dictionary<string, string> regionsToHostPort = EnvironmentHelper.GetRedisConnections( allRegions );
+        foreach ( string region in allRegions )
+        {
+            if ( regionsToHostPort.ContainsKey( region ) )
+            {
+                continue;
+            }
+
+            throw new ArgumentException( $"Not all regions have its own reds configuration. Region without configuration: {region}" );
+        }
+
+        return new RedisConfigurationParser().FromDictionary( regionsToHostPort );
     }
 }

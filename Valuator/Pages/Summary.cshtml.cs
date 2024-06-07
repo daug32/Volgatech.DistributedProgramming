@@ -2,18 +2,19 @@
 using Caches.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Caches.CacheIds;
+using Valuator.Caches.ShardSearching;
 
 namespace Valuator.Pages;
 
 public class SummaryModel : PageModel
 {
     private readonly ILogger<SummaryModel> _logger;
-    private readonly ICacheService _cacheService;
+    private readonly IShardSearcher _shardSearcher;
 
-    public SummaryModel( ILogger<SummaryModel> logger, ICacheService cacheService )
+    public SummaryModel( ILogger<SummaryModel> logger, IShardSearcher shardSearcher )
     {
         _logger = logger;
-        _cacheService = cacheService;
+        _shardSearcher = shardSearcher;
     }
 
     public double Rank { get; set; } = 0;
@@ -23,17 +24,17 @@ public class SummaryModel : PageModel
     {
         _logger.LogDebug( id );
 
-        try
-        {
-            var indexedModelId = new IndexModelId( id );
+        var indexedModelId = new IndexModelId( id );
+        var textId = new TextId( indexedModelId );
 
-            Rank = ParseDouble( _cacheService.Get( new RankId( indexedModelId ).ToCacheKey() ) );
-            Similarity = ParseDouble( _cacheService.Get( new SimilarityId( indexedModelId ).ToCacheKey() ) );
-        }
-        catch ( Exception ex )
+        ICacheService? cacheService = _shardSearcher.Find( textId.ToCacheKey() );
+        if ( cacheService is null )
         {
-            _logger.LogError( ex, null );
+            return;
         }
+
+        Rank = ParseDouble( cacheService.Get( new RankId( indexedModelId ).ToCacheKey() ) );
+        Similarity = ParseDouble( cacheService.Get( new SimilarityId( indexedModelId ).ToCacheKey() ) );
     }
 
     private double ParseDouble( string? value )

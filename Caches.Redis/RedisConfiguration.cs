@@ -2,6 +2,5 @@ namespace Caches.Redis;
 
 public class RedisConfiguration
 {
-    public string HostName { get; set; }
-    public int Port { get; set; }
+    public Dictionary<string, RedisShardConfiguration> Shards { get; set; }
 }

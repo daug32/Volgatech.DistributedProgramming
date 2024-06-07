@@ -29,12 +29,17 @@ internal class RedisCacheService : ICacheService
         return _database.StringGet( key.Value );
     }
 
+    public bool HasKey( CacheKey key )
+    {
+        return _database.KeyExists( key.Value );
+    }
+
     public List<CacheKey> GetAllKeys()
     {
         var rawKeys = _server.Keys();
         
         return rawKeys
-            .Select( key => new CacheKey( key ) )
+            .Select( key => new CacheKey( key! ) )
             .ToList();
     }
 }

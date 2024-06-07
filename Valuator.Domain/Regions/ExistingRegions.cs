@@ -6,7 +6,7 @@ public partial class Region
 {
     public static Region Russia => new( "RUS" );
     public static Region EuropeUnion => new( "EU" );
-    public static Region Other => new( "Other" );
+    public static Region Other => new( "OTHER" );
 
     public static List<Region> GetAllRegions() => typeof( Region )
         .GetProperties( BindingFlags.Static | BindingFlags.Public | BindingFlags.GetProperty )

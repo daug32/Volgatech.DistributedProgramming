@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Caches.Redis\Caches.Redis.csproj" />
     <ProjectReference Include="..\FluentAssertions\FluentAssertions.csproj" />
+    <ProjectReference Include="..\Infrastructure.Common\Infrastructure.Common.csproj" />
     <ProjectReference Include="..\MessageBus.Nats\MessageBus.Nats.csproj" />
     <ProjectReference Include="..\Valuator.Caches\Valuator.Caches.csproj" />
     <ProjectReference Include="..\Valuator.Domain\Valuator.Domain.csproj" />

@@ -6,5 +6,7 @@ public interface ICacheService
 
     string? Get( CacheKey key );
 
+    bool HasKey( CacheKey key );
+
     List<CacheKey> GetAllKeys();
 }
