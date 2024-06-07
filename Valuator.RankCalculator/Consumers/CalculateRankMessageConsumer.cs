@@ -33,13 +33,16 @@ public class CalculateRankMessageConsumer : IMessageConsumer
 
         var indexModelId = new IndexModelId( messageContent );
         var textId = new TextId( indexModelId );
-        var sharKey = new ShardKey( textId );
+        var shardKey = new ShardKey( textId );
         
-        ICacheService? cacheService = _shardSearcher.Find( sharKey );
+        ICacheService? cacheService = _shardSearcher.Find( shardKey );
         if ( cacheService is null )
         {
+            _logger.LogError( $"Couldn't find a cache shard for the shardKey. ShardKey: {shardKey}" );
             return;
         }
+        
+        _logger.LogInformation( $"LOOKUP: {textId}, {cacheService.Get( shardKey.ToCacheKey() )}" );
 
         string? text = cacheService.Get( textId.ToCacheKey() );
         if ( text is null )
@@ -52,11 +55,13 @@ public class CalculateRankMessageConsumer : IMessageConsumer
             new RankId( indexModelId ).ToCacheKey(),
             rank.ToString( CultureInfo.InvariantCulture ) );
         
-        _messagePublisher.Publish( Messages.RankCalculatedNotification, new RankCalculatedNotificationDto
-        {
-             Rank = rank,
-             TextId = textId.ToString()
-        } );
+        _messagePublisher.Publish(
+            Messages.RankCalculatedNotification, 
+            new RankCalculatedNotificationDto
+            {
+                 Rank = rank,
+                 TextId = textId.ToString()
+            } );
     }
 
     private double CalculateRank( string text )

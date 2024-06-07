@@ -26,7 +26,8 @@ internal class RedisCacheServiceFactory : ICacheServiceFactory
         
         if ( !_connectionToRegion.ContainsKey( region ) )
         {
-            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect( shardConfiguration.HostName );
+            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(
+                $"{shardConfiguration.HostName}:{shardConfiguration.Port}" );
             
             _connectionToRegion[region] = new RedisConnection( 
                 connectionMultiplexer.GetServer( shardConfiguration.HostName, shardConfiguration.Port ),

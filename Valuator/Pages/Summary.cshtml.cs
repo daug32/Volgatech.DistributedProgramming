@@ -26,12 +26,16 @@ public class SummaryModel : PageModel
 
         var indexedModelId = new IndexModelId( id );
         var textId = new TextId( indexedModelId );
+        var shardKey = new ShardKey( textId );
 
-        ICacheService? cacheService = _shardSearcher.Find( new ShardKey( textId ) );
+        ICacheService? cacheService = _shardSearcher.Find( shardKey );
         if ( cacheService is null )
         {
+            _logger.LogError( $"Couldn't find a cache shard for the shardKey. ShardKey: {shardKey}" );
             return;
         }
+        
+        _logger.LogInformation( $"LOOKUP: {textId}, {cacheService.Get( shardKey.ToCacheKey() )}" );
 
         Rank = ParseDouble( cacheService.Get( new RankId( indexedModelId ).ToCacheKey() ) );
         Similarity = ParseDouble( cacheService.Get( new SimilarityId( indexedModelId ).ToCacheKey() ) );

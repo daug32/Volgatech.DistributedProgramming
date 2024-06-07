@@ -4,9 +4,9 @@
     "Valuator.RankCalculator": {
       "commandName": "Project",
       "environmentVariables": {
-        "DB_RUS": "127.0.0.1:6379",
-        "DB_EU": "127.0.0.1:6379",
-        "DB_OTHER": "127.0.0.1:6379"
+        "DB_RUS": "127.0.0.1:7010",
+        "DB_EU":  "127.0.0.1:7011",
+        "DB_OTHER":  "127.0.0.1:7012"
       }
     }
   }

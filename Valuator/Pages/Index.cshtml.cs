@@ -41,9 +41,10 @@ public class IndexModel : PageModel
         
         var textId = new TextId( indexedModelId );
 
-        var shardId = new ShardKey( textId ).ToCacheKey();
+        var shardKey = new ShardKey( textId );
         var shardRegion = region.ToString();
-        cacheService.Add( shardId, shardRegion );
+        cacheService.Add( shardKey.ToCacheKey(), shardRegion );
+        _logger.LogInformation( $"LOOKUP: {textId}, {cacheService.Get( shardKey.ToCacheKey() )}" );
         
         var similarityId = new SimilarityId( indexedModelId );
         int similarity = CalculateSimilarity( text, cacheService );
@@ -71,7 +72,8 @@ public class IndexModel : PageModel
         var hasSameText = false;
         foreach ( CacheKey key in keys )
         {
-            if ( cacheService.Get( key )!.Equals( text, StringComparison.InvariantCultureIgnoreCase ) )
+            string textToCompare = cacheService.Get( key )!;
+            if ( textToCompare.Equals( text, StringComparison.InvariantCultureIgnoreCase ) )
             {
                 hasSameText = true;
                 break;
