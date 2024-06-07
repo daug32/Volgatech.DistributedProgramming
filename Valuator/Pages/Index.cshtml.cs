@@ -4,6 +4,8 @@ using MessageBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Caches.CacheIds;
+using Valuator.Domain.Countries;
+using Valuator.Domain.Regions;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
 
@@ -15,6 +17,8 @@ public class IndexModel : PageModel
     private readonly ICacheService _cacheService;
     private readonly IMessagePublisher _messagePublisher;
 
+    public List<Country> Countries = Country.GetAllCountries();
+
     public IndexModel( ILogger<IndexModel> logger, ICacheService cacheService, IMessagePublisher messagePublisher )
     {
         _logger = logger;
@@ -24,12 +28,14 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
+        
     }
 
-    public IActionResult OnPost( string text )
+    public IActionResult OnPost( string text, int countryIndex )
     {
-        _logger.LogDebug( text );
+        _logger.LogDebug( $"{text}\n{countryIndex}" );
 
+        Region region = Countries[countryIndex].ToRegion();
         var indexedModelId = IndexModelId.New();
         
         var textId = new TextId( indexedModelId );

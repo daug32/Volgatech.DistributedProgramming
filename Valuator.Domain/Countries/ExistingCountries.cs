@@ -11,7 +11,7 @@ public partial class Country
     public static Country USA => new( "USA" );
     public static Country India => new( "IND" );
 
-    public static List<Country> GetAllCountries => typeof( Country )
+    public static List<Country> GetAllCountries() => typeof( Country )
         .GetProperties( BindingFlags.Static | BindingFlags.Public | BindingFlags.GetProperty )
         .Where( x => x.PropertyType == typeof( Country ) )
         .Select( x => x.GetValue( null ) )

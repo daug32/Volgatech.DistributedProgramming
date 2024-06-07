@@ -11,6 +11,7 @@
     <ProjectReference Include="..\FluentAssertions\FluentAssertions.csproj" />
     <ProjectReference Include="..\MessageBus.Nats\MessageBus.Nats.csproj" />
     <ProjectReference Include="..\Valuator.Caches\Valuator.Caches.csproj" />
+    <ProjectReference Include="..\Valuator.Domain\Valuator.Domain.csproj" />
     <ProjectReference Include="..\Valuator.MessageBus\Valuator.MessageBus.csproj" />
   </ItemGroup>
 
