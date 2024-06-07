@@ -1,10 +1,10 @@
-﻿using Caches.Redis;
+﻿using Caches.Extensions;
+using Caches.Redis;
 using Infrastructure.Common;
 using MessageBus.Nats;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Valuator.Caches.ShardSearching;
 using Valuator.Domain.Regions;
 using Valuator.EventsLogger.Consumers;
 

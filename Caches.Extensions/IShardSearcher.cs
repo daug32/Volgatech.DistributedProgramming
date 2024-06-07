@@ -1,6 +1,6 @@
 ﻿using Caches.Interfaces;
 
-namespace Valuator.Caches.ShardSearching;
+namespace Caches.Extensions;
 
 public interface IShardSearcher
 {

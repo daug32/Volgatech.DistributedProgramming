@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Caches.Extensions\Caches.Extensions.csproj" />
     <ProjectReference Include="..\Caches.Redis\Caches.Redis.csproj" />
     <ProjectReference Include="..\FluentAssertions\FluentAssertions.csproj" />
     <ProjectReference Include="..\Infrastructure.Common\Infrastructure.Common.csproj" />

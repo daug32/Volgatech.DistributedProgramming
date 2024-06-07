@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Valuator.Caches.ShardSearching.Implementation;
+﻿using Caches.Extensions.Implementation;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Valuator.Caches.ShardSearching;
+namespace Caches.Extensions;
 
 public static class ConfigureDependencies
 {

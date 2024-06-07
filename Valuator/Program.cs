@@ -1,7 +1,7 @@
+using Caches.Extensions;
 using Caches.Redis;
 using Infrastructure.Common;
 using MessageBus.Nats;
-using Valuator.Caches.ShardSearching;
 using Valuator.Domain.Regions;
 
 namespace Valuator;

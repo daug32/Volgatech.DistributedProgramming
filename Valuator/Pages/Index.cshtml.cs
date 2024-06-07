@@ -28,33 +28,34 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        
     }
 
     public IActionResult OnPost( string text, int countryIndex )
     {
         _logger.LogDebug( text );
         ICacheService cacheService = GetCacheService( Countries[countryIndex].ToRegion() );
-        
+
         var indexedModelId = IndexModelId.New();
-        
+
         var textId = new TextId( indexedModelId );
         int similarity = CalculateSimilarity( text, cacheService );
-        
-        cacheService.Add( 
-            textId.ToCacheKey(), 
+
+        cacheService.Add(
+            textId.ToCacheKey(),
             text );
-        cacheService.Add( 
-            new SimilarityId( indexedModelId ).ToCacheKey(), 
+
+        cacheService.Add(
+            new SimilarityId( indexedModelId ).ToCacheKey(),
             similarity.ToString( CultureInfo.InvariantCulture ) );
 
         _messagePublisher.Publish( Messages.CalculateRankRequest, indexedModelId.ToString() );
-        
-        _messagePublisher.Publish( Messages.SimilarityCalculatedNotification, new SimilarityCalculatedNotificationDto
-        {
-            Similarity = similarity,
-            TextId = textId.ToString()
-        } );
+
+        _messagePublisher.Publish( Messages.SimilarityCalculatedNotification,
+            new SimilarityCalculatedNotificationDto
+            {
+                Similarity = similarity,
+                TextId = textId.ToString()
+            } );
 
         return Redirect( $"summary?id={indexedModelId}" );
     }
@@ -63,7 +64,7 @@ public class IndexModel : PageModel
     {
         var keys = cacheService.GetAllKeys();
 
-        bool hasSameText = false;
+        var hasSameText = false;
         foreach ( CacheKey key in keys )
         {
             if ( cacheService.Get( key )!.Equals( text, StringComparison.InvariantCultureIgnoreCase ) )

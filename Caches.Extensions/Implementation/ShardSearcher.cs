@@ -1,7 +1,7 @@
 ﻿using Caches.Interfaces;
 using Valuator.Domain.Regions;
 
-namespace Valuator.Caches.ShardSearching.Implementation;
+namespace Caches.Extensions.Implementation;
 
 internal class ShardSearcher : IShardSearcher
 {
