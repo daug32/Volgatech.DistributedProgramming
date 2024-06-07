@@ -1,8 +1,9 @@
-﻿using Caches.Interfaces;
+﻿using Caches.Extensions;
+using Caches.Interfaces;
 
 namespace Valuator.Caches.CacheIds;
 
-public class ShardKey
+public class ShardKey : IShardKey
 {
     public readonly string Value;
 

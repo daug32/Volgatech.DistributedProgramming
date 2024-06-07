@@ -4,5 +4,5 @@ namespace Caches.Extensions;
 
 public interface IShardSearcher
 {
-    ICacheService? Find( CacheKey cacheKey );
+    ICacheService? Find( IShardKey cacheKey );
 }

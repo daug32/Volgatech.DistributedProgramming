@@ -12,12 +12,12 @@ internal class ShardSearcher : IShardSearcher
         _cacheServiceFactory = cacheServiceFactory;
     }
 
-    public ICacheService? Find( CacheKey cacheKey )
+    public ICacheService? Find( IShardKey cacheKey )
     {
         foreach ( Region region in Region.GetAllRegions() )
         {
             ICacheService cacheService = _cacheServiceFactory.CreateForRegion( region );
-            if ( !cacheService.HasKey( cacheKey ) )
+            if ( !cacheService.HasKey( cacheKey.ToCacheKey() ) )
             {
                 continue;
             }
