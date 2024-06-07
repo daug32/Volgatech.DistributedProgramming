@@ -27,7 +27,7 @@ public class Program
             .AddLogging( x => x.ClearProviders().AddConsole() )
             .AddRedisCache( configuration.GetRedisConfiguration() )
             .AddNatsMessageBus( consumerRegistrator => consumerRegistrator.AddConsumers() )
-            .AddScoped<Application>();
+            .AddHostedService<Application>();
 
         return serviceCollection;
     }

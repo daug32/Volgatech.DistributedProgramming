@@ -1,4 +1,4 @@
-$processNames = "Valuator", "nginx"
+$processNames = "Valuator", "nginx", "Valuator.RankCalculator", "Valuator.EventsLogger"
 
 foreach ( $processName in $processNames ) {
     $process = Get-Process -Name $processName -ErrorAction SilentlyContinue

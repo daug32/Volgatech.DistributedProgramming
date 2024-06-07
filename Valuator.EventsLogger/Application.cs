@@ -1,18 +1,23 @@
 ﻿using MessageBus.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Valuator.EventsLogger;
 
 public class Application : Microsoft.Extensions.Hosting.BackgroundService
 {
     private readonly IConsumersHandler _consumersHandler;
+    private readonly ILogger _logger;
     
-    public Application( IConsumersHandler consumersHandler )
+    public Application( IConsumersHandler consumersHandler, ILogger<Application> logger )
     {
         _consumersHandler = consumersHandler;
+        _logger = logger;
     }
 
     protected override Task ExecuteAsync( CancellationToken token )
     {
+        _logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} started" );
+        
         _consumersHandler.Start();
 
         while ( !token.IsCancellationRequested )
@@ -20,6 +25,8 @@ public class Application : Microsoft.Extensions.Hosting.BackgroundService
         }
         
         _consumersHandler.Stop();
+        
+        _logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} completed" );
         
         return Task.CompletedTask;
     }
