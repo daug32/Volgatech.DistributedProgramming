@@ -76,7 +76,7 @@ public class Application
                 return Response.Ok();
             }
 
-            Console.WriteLine( $"Initiator. Value: {_currentValue}" );
+            Console.WriteLine( $"Initiator. Max value: {_currentValue}" );
 
             return Response.Ok();
         } );
@@ -101,7 +101,7 @@ public class Application
                     Value = _currentValue.Value
                 } ) );
 
-            Console.WriteLine( $"Process. Value: {_currentValue}" );
+            Console.WriteLine( $"Process. Received: {command.Value}. Max value: {_currentValue}" );
 
             return Response.Ok();
         } );
