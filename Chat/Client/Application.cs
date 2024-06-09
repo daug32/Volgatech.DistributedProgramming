@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text.Json;
-using Chatting.Dtos.Commands;
-using Chatting.Dtos.Queries;
+using Chatting.Commands.Commands;
+using Chatting.Commands.Queries;
 using Sockets.Connectors;
 using Sockets.Extensions;
 using Sockets.Models;
@@ -15,16 +15,16 @@ public class Application( ConnectionCreator connectionCreator )
     {
         SendMessage( new SendMessageCommand { Message = message } );
 
-        GetMessageHistoryQueryResult result = GetMessageHistory( new GetMessagesQuery() );
+        GetMessageHistoryQueryResult result = GetMessageHistory( new GetMessageHistoryQuery() );
         foreach ( string messageItem in result.MessagesHistory )
         {
             Console.WriteLine( messageItem );
         }
     }
 
-    private GetMessageHistoryQueryResult GetMessageHistory( GetMessagesQuery query )
+    private GetMessageHistoryQueryResult GetMessageHistory( GetMessageHistoryQuery query )
     {
-        Response response = Send( nameof( GetMessagesQuery ), query );
+        Response response = Send( nameof( GetMessageHistoryQuery ), query );
 
         var result = response.Parse<GetMessageHistoryQueryResult>();
         if ( result is null )

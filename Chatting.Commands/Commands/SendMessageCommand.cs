@@ -1,4 +1,4 @@
-﻿namespace Chatting.Dtos.Commands;
+﻿namespace Chatting.Commands.Commands;
 
 public class SendMessageCommand
 {

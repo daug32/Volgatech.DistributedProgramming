@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
-using Chatting.Dtos.Commands;
-using Chatting.Dtos.Queries;
+using Chatting.Commands.Commands;
+using Chatting.Commands.Queries;
 using Sockets.Listeners;
 using Sockets.Models;
 
@@ -37,7 +37,7 @@ public class Application( Listener listener )
         return request?.RequestName switch
         {
             nameof( SendMessageCommand ) => HandleSendMessageCommand( request ),
-            nameof( GetMessagesQuery ) => HandleGetMessagesQuery(),
+            nameof( GetMessageHistoryQuery ) => HandleGetMessagesQuery(),
             _ => Response.Failed( "Unknown request" )
         };
     }

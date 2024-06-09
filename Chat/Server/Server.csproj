@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Chatting.Dtos\Chatting.Dtos.csproj" />
+    <ProjectReference Include="..\..\Chatting.Commands\Chatting.Commands.csproj" />
     <ProjectReference Include="..\..\Sockets\Sockets.csproj" />
   </ItemGroup>
 
