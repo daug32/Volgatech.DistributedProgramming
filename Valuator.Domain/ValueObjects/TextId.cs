@@ -1,4 +1,4 @@
-﻿namespace Valuator.Caches.ValueObjects;
+﻿namespace Valuator.Domain.ValueObjects;
 
 public class TextId
 {

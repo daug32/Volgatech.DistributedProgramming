@@ -2,7 +2,7 @@ using System.Globalization;
 using MessageBus.Interfaces.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Caches.ValueObjects;
+using Valuator.Domain.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
 using Valuator.Repositories.Interfaces;

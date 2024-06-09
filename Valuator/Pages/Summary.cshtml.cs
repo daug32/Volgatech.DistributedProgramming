@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Caches.ValueObjects;
+using Valuator.Domain.ValueObjects;
 using Valuator.Repositories.Interfaces;
 
 namespace Valuator.Pages;

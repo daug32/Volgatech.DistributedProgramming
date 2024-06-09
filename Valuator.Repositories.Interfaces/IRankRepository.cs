@@ -1,4 +1,4 @@
-﻿using Valuator.Caches.ValueObjects;
+﻿using Valuator.Domain.ValueObjects;
 
 namespace Valuator.Repositories.Interfaces;
 
