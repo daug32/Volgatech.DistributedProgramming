@@ -1,47 +1,49 @@
 ﻿using System.Globalization;
-using Caches.Interfaces;
 using MessageBus.Interfaces;
 using Microsoft.Extensions.Logging;
-using Valuator.Caches.CacheIds;
+using Valuator.Caches.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
+using Valuator.Repositories.Interfaces;
 
 namespace Valuator.RankCalculator.Consumers;
 
 public class CalculateRankMessageConsumer : IMessageConsumer
 {
     private readonly ILogger _logger;
-    private readonly ICacheService _cacheService;
+    private readonly ITextRepository _textRepository;
+    private readonly IRankRepository _rankRepository;
     private readonly IMessagePublisher _messagePublisher;
 
     public static MessageId MessageId => Messages.CalculateRankRequest;
 
     public CalculateRankMessageConsumer(
-        ICacheService cacheService,
         ILogger<CalculateRankMessageConsumer> logger,
-        IMessagePublisher messagePublisher )
+        IMessagePublisher messagePublisher,
+        ITextRepository textRepository,
+        IRankRepository rankRepository )
     {
-        _cacheService = cacheService;
         _logger = logger;
         _messagePublisher = messagePublisher;
+        _textRepository = textRepository;
+        _rankRepository = rankRepository;
     }
 
     public void Consume( string messageContent )
     {
         _logger.LogDebug( $"Consuming message. Consumer: {nameof( CalculateRankMessageConsumer )}, Message: {messageContent}" );
 
-        var indexModelId = new IndexModelId( messageContent );
-        var textId = new TextId( indexModelId );
+        var textId = new TextId( messageContent );
 
-        string? text = _cacheService.Get( textId.ToCacheKey() );
+        string? text = _textRepository.Get( textId );
         if ( text is null )
         {
             return;
         }
 
         double rank = CalculateRank( text );
-        _cacheService.Add(
-            new RankId( indexModelId ).ToCacheKey(),
+        _rankRepository.Add(
+            new RankId( textId ),
             rank.ToString( CultureInfo.InvariantCulture ) );
         
         _messagePublisher.Publish( Messages.RankCalculatedNotification, new RankCalculatedNotificationDto

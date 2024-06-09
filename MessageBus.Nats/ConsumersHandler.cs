@@ -6,11 +6,11 @@ namespace MessageBus.Nats;
 
 public class ConsumersHandler : IConsumersHandler, IDisposable
 {
-    private IConnection _connection;
-    private List<ConsumerSubscription> _consumerSubscriptions;
-    
+    private readonly IConnection _connection;
     private readonly ConsumerRegistrator _consumerRegistrator;
     private readonly IServiceProvider _serviceProvider;
+
+    private List<ConsumerSubscription> _consumerSubscriptions;
 
     public ConsumersHandler( ConsumerRegistrator consumerRegistrator, IServiceProvider serviceProvider, IConnection connection )
     {

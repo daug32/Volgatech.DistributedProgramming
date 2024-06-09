@@ -1,25 +1,28 @@
 using System.Globalization;
-using Caches.Interfaces;
 using MessageBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Caches.CacheIds;
+using Valuator.Caches.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
+using Valuator.Repositories.Interfaces;
 
 namespace Valuator.Pages;
 
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly ICacheService _cacheService;
     private readonly IMessagePublisher _messagePublisher;
+    private readonly ITextRepository _textRepository;
+    private readonly ISimilarityRepository _similarityRepository;
 
-    public IndexModel( ILogger<IndexModel> logger, ICacheService cacheService, IMessagePublisher messagePublisher )
+    public IndexModel( ILogger<IndexModel> logger, IMessagePublisher messagePublisher, ITextRepository textRepository,
+        ISimilarityRepository similarityRepository )
     {
         _logger = logger;
-        _cacheService = cacheService;
         _messagePublisher = messagePublisher;
+        _textRepository = textRepository;
+        _similarityRepository = similarityRepository;
     }
 
     public void OnGet()
@@ -30,34 +33,37 @@ public class IndexModel : PageModel
     {
         _logger.LogDebug( text );
 
-        var indexedModelId = IndexModelId.New();
+        var textId = TextId.New();
+        _textRepository.Add( textId, text );
         
-        var textId = new TextId( indexedModelId );
-        _cacheService.Add( textId.ToCacheKey(), text );
-            
-        _messagePublisher.Publish( Messages.CalculateRankRequest, indexedModelId.ToString() );
+        _messagePublisher.Publish( Messages.CalculateRankRequest, textId.ToString() );
 
-        int similarity = CalculateSimilarity( text );
-        _cacheService.Add( new SimilarityId( indexedModelId ).ToCacheKey(), similarity.ToString( CultureInfo.InvariantCulture ) );
+        int similarity = CalculateSimilarity( textId, text );
+        _similarityRepository.Add(  new SimilarityId( textId ), similarity.ToString( CultureInfo.InvariantCulture ) );
         _messagePublisher.Publish( Messages.SimilarityCalculatedNotification, new SimilarityCalculatedNotificationDto
         {
             Similarity = similarity,
             TextId = textId.ToString()
         } );
 
-        return Redirect( $"summary?id={indexedModelId}" );
+        return Redirect( $"summary?id={textId.Value}" );
     }
 
-    private int CalculateSimilarity( string text )
+    private int CalculateSimilarity( TextId textToCalculateId, string textToCalculate )
     {
-        var keys = _cacheService.GetAllKeys();
+        List<TextId> texts = _textRepository.GetAllTexts();
 
-        bool hasSameText = keys.Any( key => _cacheService
-            .Get( key )
-            !.Equals( text, StringComparison.InvariantCultureIgnoreCase ) );
+        bool hasSameText = texts.Any( textId =>
+        {
+            if ( textId.Equals( textToCalculateId ) )
+            {
+                return false;
+            }
+            
+            string text = _textRepository.Get( textId )!;
+            return text.Equals( textToCalculate, StringComparison.InvariantCultureIgnoreCase );
+        } );
 
-        return hasSameText
-            ? 1
-            : 0;
+        return hasSameText ? 1 : 0;
     }
 }

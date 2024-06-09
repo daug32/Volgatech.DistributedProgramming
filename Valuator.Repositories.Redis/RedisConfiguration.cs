@@ -1,4 +1,4 @@
-namespace Caches.Redis;
+namespace Valuator.Repositories.Redis;
 
 public class RedisConfiguration
 {

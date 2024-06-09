@@ -1,4 +1,4 @@
-﻿using Caches.Redis;
+﻿using Valuator.Repositories.Redis;
 using Infrastructure.Common;
 using MessageBus.Nats;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +25,7 @@ public class Program
     {
         serviceCollection
             .AddLogging( x => x.ClearProviders().AddConsole() )
-            .AddRedisCache( configuration.GetRedisConfiguration() )
+            .AddRedisDatabase( configuration.GetRedisConfiguration() )
             .AddNatsMessageBus( consumerRegistrator => consumerRegistrator.AddConsumers() )
             .AddHostedService<Application>();
 

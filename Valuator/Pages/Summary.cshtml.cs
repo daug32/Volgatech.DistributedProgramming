@@ -1,39 +1,33 @@
 ﻿using System.Globalization;
-using Caches.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Valuator.Caches.CacheIds;
+using Valuator.Caches.ValueObjects;
+using Valuator.Repositories.Interfaces;
 
 namespace Valuator.Pages;
 
 public class SummaryModel : PageModel
 {
     private readonly ILogger<SummaryModel> _logger;
-    private readonly ICacheService _cacheService;
+    private readonly IRankRepository _rankRepository;
+    private readonly ISimilarityRepository _similarityRepository;
 
-    public SummaryModel( ILogger<SummaryModel> logger, ICacheService cacheService )
+    public SummaryModel( ILogger<SummaryModel> logger, IRankRepository rankRepository, ISimilarityRepository similarityRepository )
     {
         _logger = logger;
-        _cacheService = cacheService;
+        _rankRepository = rankRepository;
+        _similarityRepository = similarityRepository;
     }
 
-    public double Rank { get; set; } = 0;
-    public double Similarity { get; set; } = 0;
+    public double Rank { get; set; }
+    public double Similarity { get; set; }
 
     public void OnGet( string id )
     {
         _logger.LogDebug( id );
 
-        try
-        {
-            var indexedModelId = new IndexModelId( id );
-
-            Rank = ParseDouble( _cacheService.Get( new RankId( indexedModelId ).ToCacheKey() ) );
-            Similarity = ParseDouble( _cacheService.Get( new SimilarityId( indexedModelId ).ToCacheKey() ) );
-        }
-        catch ( Exception ex )
-        {
-            _logger.LogError( ex, null );
-        }
+        TextId textId = new TextId( id );
+        Rank = ParseDouble( _rankRepository.Get( new RankId( textId ) ) );
+        Similarity = ParseDouble( _similarityRepository.Get( new SimilarityId( textId ) ) );
     }
 
     private double ParseDouble( string? value )

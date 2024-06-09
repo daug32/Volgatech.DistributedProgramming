@@ -1,23 +1,26 @@
-using Caches.Interfaces;
-using Caches.Redis.Implementation;
+using Valuator.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using Valuator.Repositories.Redis.Repositories;
 
-namespace Caches.Redis;
+namespace Valuator.Repositories.Redis;
 
-public static class ConfigureRedisCaching 
+public static class ConfigureRedisDatabase
 {
-    public static IServiceCollection AddRedisCache(
+    public static IServiceCollection AddRedisDatabase(
         this IServiceCollection services,
         RedisConfiguration redisConfiguration )
     {
         services.AddSingleton( _ => redisConfiguration );
-        
+
         ConnectionMultiplexer connection = ConnectionMultiplexer.Connect( redisConfiguration.HostName );
         services.AddTransient<IDatabase>( _ => connection.GetDatabase() );
         services.AddTransient<IServer>( _ => connection.GetServer( redisConfiguration.HostName, redisConfiguration.Port ) );
-        services.AddTransient<ICacheService, RedisCacheService>();
+
+        services.AddTransient<ITextRepository, TextRepository>();
+        services.AddTransient<ISimilarityRepository, SimilarityRepository>();
+        services.AddTransient<IRankRepository, RankRepository>();
 
         return services;
-    }  
+    }
 }
