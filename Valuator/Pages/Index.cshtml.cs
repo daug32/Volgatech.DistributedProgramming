@@ -2,10 +2,13 @@ using System.Globalization;
 using MessageBus.Interfaces.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Valuator.Domain.Countries;
+using Valuator.Domain.Regions;
 using Valuator.Domain.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
 using Valuator.Repositories.Interfaces;
+using Valuator.Repositories.Interfaces.Shards;
 
 namespace Valuator.Pages;
 
@@ -13,45 +16,64 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly IMessagePublisher _messagePublisher;
-    private readonly ITextRepository _textRepository;
-    private readonly ISimilarityRepository _similarityRepository;
+    private readonly IShardedRepositoryCreator<ITextRepository> _textRepositoryCreator;
+    private readonly IShardedRepositoryCreator<ISimilarityRepository> _similarityRepositoryCreator;
 
-    public IndexModel( ILogger<IndexModel> logger, IMessagePublisher messagePublisher, ITextRepository textRepository,
-        ISimilarityRepository similarityRepository )
+    public List<Country> Countries = Country.GetAllCountries();
+    
+    public IndexModel(
+        ILogger<IndexModel> logger, 
+        IMessagePublisher messagePublisher,
+        IShardedRepositoryCreator<ITextRepository> textRepositoryCreator,
+        IShardedRepositoryCreator<ISimilarityRepository> similarityRepositoryCreator )
     {
         _logger = logger;
         _messagePublisher = messagePublisher;
-        _textRepository = textRepository;
-        _similarityRepository = similarityRepository;
+        _textRepositoryCreator = textRepositoryCreator;
+        _similarityRepositoryCreator = similarityRepositoryCreator;
     }
 
     public void OnGet()
     {
     }
 
-    public IActionResult OnPost( string text )
+    public IActionResult OnPost( string text, int countryIndex )
     {
         _logger.LogDebug( text );
 
+        // Commit text
         var textId = TextId.New();
-        _textRepository.Add( textId, text );
-        
-        _messagePublisher.Publish( Messages.CalculateRankRequest, textId.ToString() );
+        Region region = Countries[countryIndex].ToRegion();
+        ITextRepository textRepository = _textRepositoryCreator.Create( region );
+        textRepository.Add( textId, text );
 
-        int similarity = CalculateSimilarity( textId, text );
-        _similarityRepository.Add(  new SimilarityId( textId ), similarity.ToString( CultureInfo.InvariantCulture ) );
-        _messagePublisher.Publish( Messages.SimilarityCalculatedNotification, new SimilarityCalculatedNotificationDto
-        {
-            Similarity = similarity,
-            TextId = textId.ToString()
-        } );
+        _logger.LogInformation( $"LOOKUP: {textId}, {region}" );
+        
+        // Process rank
+        _messagePublisher.Publish( Messages.CalculateRankRequest, textId.ToString() );
+        
+        // Process similarity
+        int similarity = CalculateSimilarity( textId, text, textRepository );
+        _similarityRepositoryCreator
+            .Create( region )
+            .Add( new SimilarityId( textId ), similarity.ToString( CultureInfo.InvariantCulture ) );
+        _messagePublisher.Publish(
+            Messages.SimilarityCalculatedNotification, 
+            new SimilarityCalculatedNotificationDto
+            {
+                Similarity = similarity,
+                TextId = textId.ToString()
+            } );
 
         return Redirect( $"summary?id={textId.Value}" );
     }
 
-    private int CalculateSimilarity( TextId textToCalculateId, string textToCalculate )
+    private int CalculateSimilarity( 
+        TextId textToCalculateId,
+        string textToCalculate,
+        ITextRepository textRepository )
     {
-        List<TextId> texts = _textRepository.GetAllTexts();
+        List<TextId> texts = textRepository.GetAllTexts();
 
         bool hasSameText = texts.Any( textId =>
         {
@@ -60,7 +82,7 @@ public class IndexModel : PageModel
                 return false;
             }
             
-            string text = _textRepository.Get( textId )!;
+            string text = textRepository.Get( textId )!;
             return text.Equals( textToCalculate, StringComparison.InvariantCultureIgnoreCase );
         } );
 

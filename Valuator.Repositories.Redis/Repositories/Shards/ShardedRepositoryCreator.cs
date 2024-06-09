@@ -38,7 +38,7 @@ internal class ShardedRepositoryCreator :
     {
         if ( !_connections.ContainsKey( region ) )
         {
-            RedisShardConfiguration configuration = _redisConfiguration.Shards[region.Value.ToUpper()];
+            RedisShardConfiguration configuration = _redisConfiguration.Shards[region.Value];
             ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect( $"{configuration.HostName}:{configuration.Port}" );
 
             _connections[region] = new RedisConnection(

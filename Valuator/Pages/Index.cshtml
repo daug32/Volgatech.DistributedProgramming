@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Valuator.Domain.Countries
 @model IndexModel
 @{
     ViewData["Title"] = "Главная";
@@ -6,6 +8,15 @@
 
 <div class="text-center">
     <form method="post">
+        <div>Страна пользователя:</div>
+        <select name="countryIndex">
+            @for ( int index = 0; index < Model.Countries.Count; index++ )
+            {
+                Country country = Model.Countries[index];
+                <option value="@index">@country.Value</option>
+            }
+        </select>
+        
         <div class="col-2">Текст для оценки:</div>
         <div class="col-10">
             <textarea name="text" rows="5" cols="50"></textarea>

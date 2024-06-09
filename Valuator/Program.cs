@@ -12,7 +12,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddNatsMessageBus();
-        builder.Services.AddRedisDatabase( builder.Configuration.GetRedisConfiguration() );
+        builder.Services.AddRedisDatabase( new RedisConfigurationParser().FromEnvironment() );
 
         WebApplication app = builder.Build();
 

@@ -1,8 +1,6 @@
 using Valuator.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
 using Valuator.Repositories.Interfaces.Shards;
-using Valuator.Repositories.Redis.Repositories;
 using Valuator.Repositories.Redis.Repositories.Shards;
 
 namespace Valuator.Repositories.Redis;
@@ -16,6 +14,7 @@ public static class ConfigureRedisDatabase
         services.AddSingleton( _ => redisConfiguration );
 
         services.AddTransient<IRegionSearcher, RegionSearcher>();
+
         services.AddTransient<IShardedRepositoryCreator<ITextRepository>, ShardedRepositoryCreator>();
         services.AddTransient<IShardedRepositoryCreator<ISimilarityRepository>, ShardedRepositoryCreator>();
         services.AddTransient<IShardedRepositoryCreator<IRankRepository>, ShardedRepositoryCreator>();
