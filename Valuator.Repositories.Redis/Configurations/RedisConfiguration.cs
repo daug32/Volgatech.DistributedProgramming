@@ -1,4 +1,4 @@
-namespace Valuator.Repositories.Redis;
+namespace Valuator.Repositories.Redis.Configurations;
 
 public class RedisConfiguration
 {

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Valuator.RankCalculator.Consumers;
+using Valuator.Repositories.Redis.Configurations;
 
 namespace Valuator.RankCalculator;
 

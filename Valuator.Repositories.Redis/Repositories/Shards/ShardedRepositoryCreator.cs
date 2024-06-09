@@ -2,14 +2,9 @@ using StackExchange.Redis;
 using Valuator.Domain.Regions;
 using Valuator.Repositories.Interfaces;
 using Valuator.Repositories.Interfaces.Shards;
+using Valuator.Repositories.Redis.Configurations;
 
 namespace Valuator.Repositories.Redis.Repositories.Shards;
-
-internal class RedisConnection( IDatabase database, IServer server )
-{
-    public readonly IServer Server = server;
-    public readonly IDatabase Database = database;
-}
 
 internal class ShardedRepositoryCreator :
     IShardedRepositoryCreator<ITextRepository>,

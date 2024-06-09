@@ -1,5 +1,6 @@
 using Valuator.Repositories.Redis;
 using MessageBus.Nats;
+using Valuator.Repositories.Redis.Configurations;
 
 namespace Valuator;
 

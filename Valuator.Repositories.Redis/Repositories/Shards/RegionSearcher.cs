@@ -5,7 +5,7 @@ using Valuator.Repositories.Interfaces.Shards;
 
 namespace Valuator.Repositories.Redis.Repositories.Shards;
 
-public class RegionSearcher : IRegionSearcher
+internal class RegionSearcher : IRegionSearcher
 {
     private readonly IShardedRepositoryCreator<ITextRepository> _shardedRepositoryCreator;
 

@@ -1,6 +1,7 @@
 using Valuator.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Valuator.Repositories.Interfaces.Shards;
+using Valuator.Repositories.Redis.Configurations;
 using Valuator.Repositories.Redis.Repositories.Shards;
 
 namespace Valuator.Repositories.Redis;
