@@ -1,4 +1,5 @@
-﻿using Sockets.Models;
+﻿using System.Text.Json;
+using Sockets.Models;
 
 namespace Sockets.Extensions;
 
@@ -20,6 +21,12 @@ public static class ResponseExtensions
             ? ""
             : $"Message: {response.Data}";
         throw new ArgumentException( $"Error. {message}" );
+    }
 
+    public static T? Parse<T>( this Response response ) where T : class
+    {
+        return String.IsNullOrEmpty( response.Data )
+            ? JsonSerializer.Deserialize<T>( response.Data! )
+            : null;
     }
 }

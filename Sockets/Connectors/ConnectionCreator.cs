@@ -4,11 +4,11 @@ using Sockets.Implementation;
 
 namespace Sockets.Connectors;
 
-public class ConnectionCreator
+public class ConnectionCreator( string host, int port )
 {
     private readonly IpAddressCreator _ipAddressCreator = new();
-    
-    public Socket ConnectToServer( string host, int port )
+
+    public Socket CreateConnection()
     {
         IPAddress ipAddress = _ipAddressCreator.Create( host );
         
