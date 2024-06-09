@@ -18,7 +18,7 @@ internal static class Program
         }
         
         using Socket connection = _connectionCreator.ConnectToServer( "localhost", port );
-        connection.Send( Request.Create( "some message" ) );
+        connection.Send( Request.Create( "12345678" ) );
         connection.Disconnect( false );
     }
 }

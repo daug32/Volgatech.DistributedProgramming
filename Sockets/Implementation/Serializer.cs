@@ -14,6 +14,7 @@ internal class Serializer
         string serializedData = JsonSerializer.Serialize( request );
 
         var result = new List<byte>();
+        // Add length of the message
         result.AddRange( BitConverter.GetBytes( serializedData.Length ) );
         result.AddRange( Encoding.UTF8.GetBytes( serializedData ) );
 
@@ -24,22 +25,23 @@ internal class Serializer
     {
         var buffer = new byte[_maxBufferSize];
 
-        ushort contentLength = ParsePackageLength( receiver );
+        int contentLength = ParsePackageLength( receiver );
         var result = new StringBuilder( contentLength );
         
         while ( contentLength > result.Length )
         {
             int writtenBytesLength = receiver.Receive( buffer );
-            result.Append( Encoding.UTF8.GetString( buffer, 2, writtenBytesLength - 2 ) );
+            string bytes = Encoding.UTF8.GetString( buffer, 0, writtenBytesLength );
+            result.Append( bytes );
         }
 
         return JsonSerializer.Deserialize<Request>( result.ToString() );   
     }
 
-    private ushort ParsePackageLength( Socket receiver )
+    private int ParsePackageLength( Socket receiver )
     {
-        var intBuffer = new byte[2];
+        var intBuffer = new byte[sizeof( int )];
         receiver.Receive( intBuffer );
-        return BitConverter.ToUInt16( intBuffer, 0 );
+        return BitConverter.ToInt32( intBuffer, 0 );
     }
 }
