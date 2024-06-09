@@ -25,7 +25,7 @@ public class Application( ConnectionCreator connectionCreator )
     private GetMessageHistoryQueryResult GetMessageHistory( GetMessagesQuery query )
     {
         Response response = Send( nameof( GetMessagesQuery ), query );
-        
+
         var result = response.Parse<GetMessageHistoryQueryResult>();
         if ( result is null )
         {
@@ -43,7 +43,7 @@ public class Application( ConnectionCreator connectionCreator )
     private Response Send<T>( string requestName, T content )
     {
         using Socket connection = connectionCreator.CreateConnection();
-        
+
         connection.Send( Request.Create(
             requestName,
             JsonSerializer.Serialize( content ) ) );
@@ -52,7 +52,7 @@ public class Application( ConnectionCreator connectionCreator )
             .Receive()
             .ThrowIfNull()
             .ThrowIfError();
-        
+
         return response;
     }
 }

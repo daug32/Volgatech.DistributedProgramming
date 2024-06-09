@@ -20,6 +20,7 @@ public static class ResponseExtensions
         string message = String.IsNullOrEmpty( response.Data )
             ? ""
             : $"Message: {response.Data}";
+
         throw new ArgumentException( $"Error. {message}" );
     }
 

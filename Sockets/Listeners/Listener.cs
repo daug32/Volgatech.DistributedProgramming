@@ -7,15 +7,14 @@ namespace Sockets.Listeners;
 
 public class Listener
 {
-    private static readonly IpAddressCreator _ipAddressCreator = new();
     private static readonly Serializer _serializer = new();
 
     public readonly IPAddress Host;
     public readonly int Port;
 
-    public Listener(string host, int port)
+    public Listener( string host, int port )
     {
-        Host = _ipAddressCreator.Create( host );
+        Host = new IpAddressCreator().Create( host );
         Port = port;
     }
 

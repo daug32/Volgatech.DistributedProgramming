@@ -7,7 +7,7 @@ namespace Sockets.Implementation;
 internal class Serializer
 {
     private readonly int _maxBufferSize = 64;
-    
+
     public byte[] Serialize<T>( T request )
     {
         string serializedData = JsonSerializer.Serialize( request );
@@ -26,7 +26,7 @@ internal class Serializer
 
         int contentLength = ParsePackageLength( receiver );
         var result = new StringBuilder( contentLength );
-        
+
         while ( contentLength > result.Length )
         {
             int writtenBytesLength = receiver.Receive( buffer );
@@ -34,7 +34,7 @@ internal class Serializer
             result.Append( bytes );
         }
 
-        return JsonSerializer.Deserialize<T>( result.ToString() );   
+        return JsonSerializer.Deserialize<T>( result.ToString() );
     }
 
     private int ParsePackageLength( Socket receiver )

@@ -7,13 +7,13 @@ internal static class Program
 {
     public static void Main( string[] args )
     {
-        string helpMessage = "Use <host> <port> <message>";
+        var helpMessage = "Use <host> <port> <message>";
         if ( args.Length != 3 )
         {
             Console.WriteLine( $"Invalid number of arguments. {helpMessage}" );
             return;
         }
-        
+
         if ( !Int32.TryParse( args[1], out int port ) )
         {
             Console.WriteLine( $"Invalid port number. {helpMessage}" );

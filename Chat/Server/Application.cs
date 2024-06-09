@@ -24,7 +24,7 @@ public class Application( Listener listener )
 
         Console.WriteLine( "Server stopped" );
     }
-    
+
     private Response OnDataReceived( Request? request )
     {
         string? message = request?.Data;
@@ -44,25 +44,25 @@ public class Application( Listener listener )
 
     private Response HandleSendMessageCommand( Request request )
     {
-        SendMessageCommand? sendMessageCommand = JsonSerializer.Deserialize<SendMessageCommand>( request.Data );
-        
+        var sendMessageCommand = JsonSerializer.Deserialize<SendMessageCommand>( request.Data );
+
         string? message = sendMessageCommand?.Message;
         if ( message is null )
         {
             return Response.Failed( "Message is null" );
         }
-        
+
         Console.WriteLine( $"Message received: {message}" );
         _messages.Add( message );
-        
+
         return Response.Ok();
     }
 
     private Response HandleGetMessagesQuery()
     {
-        var messages = new GetMessageHistoryQueryResult 
+        var messages = new GetMessageHistoryQueryResult
         {
-            MessagesHistory = _messages.ToList() 
+            MessagesHistory = _messages.ToList()
         };
 
         return Response.Ok( JsonSerializer.Serialize( messages ) );

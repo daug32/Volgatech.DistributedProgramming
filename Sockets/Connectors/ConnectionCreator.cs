@@ -4,16 +4,21 @@ using Sockets.Implementation;
 
 namespace Sockets.Connectors;
 
-public class ConnectionCreator( string host, int port )
+public class ConnectionCreator
 {
-    private readonly IpAddressCreator _ipAddressCreator = new();
+    private readonly IPAddress _host;
+    private readonly int _port;
+
+    public ConnectionCreator( string host, int port )
+    {
+        _host = new IpAddressCreator().Create( host );
+        _port = port;
+    }
 
     public Socket CreateConnection()
     {
-        IPAddress ipAddress = _ipAddressCreator.Create( host );
-        
-        Socket sender = new Socket( ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp );
-        sender.Connect( ipAddress, port );
+        var sender = new Socket( _host.AddressFamily, SocketType.Stream, ProtocolType.Tcp );
+        sender.Connect( _host, _port );
 
         return sender;
     }

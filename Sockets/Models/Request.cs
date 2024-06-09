@@ -5,9 +5,12 @@ public class Request
     public string RequestName { get; set; }
     public string Data { get; set; }
 
-    public static Request Create( string requestName, string content ) => new Request()
+    public static Request Create( string requestName, string content )
     {
-        RequestName = requestName,
-        Data = content
-    };
+        return new Request
+        {
+            RequestName = requestName,
+            Data = content
+        };
+    }
 }
