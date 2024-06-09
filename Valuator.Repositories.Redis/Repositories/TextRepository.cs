@@ -16,10 +16,7 @@ internal class TextRepository( IDatabase database, IServer server ) : ITextRepos
         database.StringSet( key.ToString(), value );
     }
 
-    public string? Get( TextId key )
-    {
-        return database.StringGet( key.ToString() );
-    }
+    public string? Get( TextId key ) => database.StringGet( key.ToString() );
 
     public List<TextId> GetAllTexts()
     {
@@ -30,4 +27,6 @@ internal class TextRepository( IDatabase database, IServer server ) : ITextRepos
             .Select( key => new TextId( key! ) )
             .ToList();
     }
+
+    public bool Contains( TextId textId ) => database.KeyExists( textId.ToString() );
 }

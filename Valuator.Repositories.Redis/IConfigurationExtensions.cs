@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Valuator.Domain.Regions;
 
 namespace Valuator.Repositories.Redis;
 
@@ -21,14 +22,25 @@ public static class IConfigurationExtensions
             throw new ArgumentException( $"{nameof( RedisConfiguration )} can not be null" );
         }
 
-        if ( String.IsNullOrWhiteSpace( configuration.HostName ) )
+        foreach ( RedisShardConfiguration redisShardConfiguration in configuration.Shards.Values )
         {
-            throw new ArgumentException( $"{nameof( RedisConfiguration.HostName )} can not be null or whitespace" );
+            if ( String.IsNullOrWhiteSpace( redisShardConfiguration.HostName ) )
+            {
+                throw new ArgumentException( $"{nameof( RedisShardConfiguration.HostName )} can not be null or whitespace" );
+            }
+
+            if ( redisShardConfiguration.Port is < 1 or >= Int16.MaxValue )
+            {
+                throw new ArgumentException( $"{nameof( RedisShardConfiguration.Port )} is not in valid range. Expected: [1; {Int16.MaxValue}]" );
+            }
         }
 
-        if ( configuration.Port is < 1 or >= Int16.MaxValue )
+        foreach ( Region region in Region.GetAllRegions() )
         {
-            throw new ArgumentException( $"{nameof( RedisConfiguration.Port )} is not in valid range. Expected: [1; {Int16.MaxValue}]" );
+            if ( !configuration.Shards.ContainsKey( region.Value.ToUpper() ) )
+            {
+                throw new ArgumentException( $"Redis configuration must have configs for each region. Region without config: {region}" );
+            }
         }
 
         return configuration;

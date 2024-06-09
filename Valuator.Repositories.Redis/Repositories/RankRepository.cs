@@ -16,8 +16,5 @@ internal class RankRepository( IDatabase database ) : IRankRepository
         database.StringSet( key.ToString(), value );
     }
 
-    public string? Get( RankId key )
-    {
-        return database.StringGet( key.ToString() );
-    }
+    public string? Get( RankId key ) => database.StringGet( key.ToString() );
 }

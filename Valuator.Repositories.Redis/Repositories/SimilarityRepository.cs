@@ -16,8 +16,5 @@ internal class SimilarityRepository( IDatabase database ) : ISimilarityRepositor
         database.StringSet( key.ToString(), value );
     }
 
-    public string? Get( SimilarityId key )
-    {
-        return database.StringGet( key.ToString() );
-    }
+    public string? Get( SimilarityId key ) => database.StringGet( key.ToString() );
 }
