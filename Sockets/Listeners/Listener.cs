@@ -18,6 +18,11 @@ public class Listener
         Port = port;
     }
 
+    public void Listen( Func<Request?, Response> onDataReceived )
+    {
+        Listen( onDataReceived, CancellationToken.None );
+    }
+
     public void Listen(
         Func<Request?, Response> onDataReceived,
         CancellationToken token )

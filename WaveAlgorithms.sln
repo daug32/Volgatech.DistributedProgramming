@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WageAlgorithm", "WageAlgorithm\WageAlgorithm.csproj", "{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets.Extensions", "Sockets.Extensions\Sockets.Extensions.csproj", "{31E1C30C-AE3B-4786-B989-28E633617EEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets", "Sockets\Sockets.csproj", "{5C8A2CE9-349C-4738-82A3-C41E0C5ABD95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31E1C30C-AE3B-4786-B989-28E633617EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E1C30C-AE3B-4786-B989-28E633617EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E1C30C-AE3B-4786-B989-28E633617EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E1C30C-AE3B-4786-B989-28E633617EEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C8A2CE9-349C-4738-82A3-C41E0C5ABD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C8A2CE9-349C-4738-82A3-C41E0C5ABD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C8A2CE9-349C-4738-82A3-C41E0C5ABD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C8A2CE9-349C-4738-82A3-C41E0C5ABD95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
