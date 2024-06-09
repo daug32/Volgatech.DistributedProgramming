@@ -4,7 +4,7 @@ using Sockets.Connectors;
 using Sockets.Extensions;
 using Sockets.Models;
 
-namespace WaveAlgorithm;
+namespace Chain;
 
 public class CustomNetClient( string host, int port )
 {

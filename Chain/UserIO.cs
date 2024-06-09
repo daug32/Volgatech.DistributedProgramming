@@ -1,4 +1,4 @@
-﻿namespace WaveAlgorithm;
+﻿namespace Chain;
 
 public class UserIo
 {

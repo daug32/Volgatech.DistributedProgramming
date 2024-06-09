@@ -1,10 +1,9 @@
-using System.Runtime.CompilerServices;
 using System.Text.Json;
+using Chain.Commands;
 using Sockets.Listeners;
 using Sockets.Models;
-using WaveAlgorithm.Commands;
 
-namespace WaveAlgorithm;
+namespace Chain;
 
 public class Application
 {

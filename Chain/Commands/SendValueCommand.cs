@@ -1,4 +1,4 @@
-﻿namespace WaveAlgorithm.Commands;
+﻿namespace Chain.Commands;
 
 public class SendValueCommand
 {

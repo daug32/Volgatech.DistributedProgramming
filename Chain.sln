@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WageAlgorithm", "WageAlgorithm\WageAlgorithm.csproj", "{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chain", "Chain\Chain.csproj", "{D4A2C5AC-DFE2-4256-90FA-FF5F7B5092A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets.Extensions", "Sockets.Extensions\Sockets.Extensions.csproj", "{31E1C30C-AE3B-4786-B989-28E633617EEF}"
 EndProject
