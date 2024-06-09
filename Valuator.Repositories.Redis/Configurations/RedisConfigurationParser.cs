@@ -6,18 +6,16 @@ namespace Valuator.Repositories.Redis.Configurations;
 
 public class RedisConfigurationParser
 {
-    public RedisConfiguration FromAppConfiguration( IConfiguration appConfiguration )
+    public RedisConnectionConfiguration? GetMapperConfiguration( IConfiguration appConfiguration )
     {
-        var configuration = appConfiguration
+        return appConfiguration
             .GetSection( "Redis" )
-            .Get<RedisConfiguration>();
-
-        return RedisConfigurationValidator.Validate( configuration );
+            .Get<RedisConnectionConfiguration>();
     }
 
-    public RedisConfiguration FromEnvironment()
+    public Dictionary<string, RedisConnectionConfiguration> GetRegionsConfigurations()
     {
-        var regionsToHostPort = Region
+        Dictionary<Region, string> regionsToHostPort = Region
             .GetAllRegions()
             .Select( region => ( Region: region, Value: Environment.GetEnvironmentVariable( $"DB_{region.Value}" ) ) )
             .Where( pair => !String.IsNullOrWhiteSpace( pair.Value ) )
@@ -26,9 +24,9 @@ public class RedisConfigurationParser
         return FromDictionary( regionsToHostPort );
     }
 
-    public RedisConfiguration FromDictionary( Dictionary<Region, string> regionsToHostPort )
+    private Dictionary<string, RedisConnectionConfiguration> FromDictionary( Dictionary<Region, string> regionsToHostPort )
     {
-        var shardsConfigurations = new Dictionary<string, RedisShardConfiguration>();
+        var shardsConfigurations = new Dictionary<string, RedisConnectionConfiguration>();
 
         foreach ( ( Region region, string hostPort ) in regionsToHostPort )
         {
@@ -40,16 +38,13 @@ public class RedisConfigurationParser
 
             shardsConfigurations.Add(
                 region.Value,
-                new RedisShardConfiguration
+                new RedisConnectionConfiguration
                 {
                     Port = port,
                     HostName = host
                 } );
         }
 
-        return RedisConfigurationValidator.Validate( new RedisConfiguration
-        {
-            Shards = shardsConfigurations
-        } );
+        return shardsConfigurations;
     }
 }

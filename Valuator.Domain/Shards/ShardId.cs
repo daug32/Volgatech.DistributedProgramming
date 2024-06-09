@@ -1,10 +1,12 @@
-namespace Valuator.Domain.ValueObjects;
+using Valuator.Domain.ValueObjects;
 
-public record ShardKey 
+namespace Valuator.Domain.Shards;
+
+public record ShardId
 {
     public readonly string Value;
 
-    public ShardKey( TextId id )
+    public ShardId( TextId id )
     {
         Value = $"SHARD-{id}";
     }

@@ -11,14 +11,30 @@ internal static class RedisConfigurationValidator
             throw new ArgumentException( $"{nameof( RedisConfiguration )} can not be null" );
         }
 
-        foreach ( RedisShardConfiguration redisShardConfiguration in configuration.Shards.Values )
+        Validate( configuration.Mapper );
+        foreach ( RedisConnectionConfiguration redisShardConfiguration in configuration.Shards.Values )
         {
-            ValidateShardConfiguration( redisShardConfiguration );
+            Validate( redisShardConfiguration );
         }
 
         AssumeEachRegionHaveConfiguration( configuration );
 
         return configuration;
+    }
+
+    public static RedisConnectionConfiguration Validate( RedisConnectionConfiguration connectionConfiguration )
+    {
+        if ( String.IsNullOrWhiteSpace( connectionConfiguration.HostName ) )
+        {
+            throw new ArgumentException( $"{nameof( RedisConnectionConfiguration.HostName )} can not be null or whitespace" );
+        }
+
+        if ( connectionConfiguration.Port is < 1 or >= Int16.MaxValue )
+        {
+            throw new ArgumentException( $"{nameof( RedisConnectionConfiguration.Port )} is not in valid range. Expected: [1; {Int16.MaxValue}]" );
+        }
+
+        return connectionConfiguration;
     }
 
     private static void AssumeEachRegionHaveConfiguration( RedisConfiguration configuration )
@@ -34,22 +50,9 @@ internal static class RedisConfigurationValidator
 
         if ( regionsWithoutConfiguration.Any() )
         {
-            throw new ArgumentException( 
+            throw new ArgumentException(
                 $"Redis configuration must have configs for each existing region. "
                 + $"Regions without configurations: {String.Join( ", ", regionsWithoutConfiguration )}" );
-        }
-    }
-
-    private static void ValidateShardConfiguration( RedisShardConfiguration redisShardConfiguration )
-    {
-        if ( String.IsNullOrWhiteSpace( redisShardConfiguration.HostName ) )
-        {
-            throw new ArgumentException( $"{nameof( RedisShardConfiguration.HostName )} can not be null or whitespace" );
-        }
-
-        if ( redisShardConfiguration.Port is < 1 or >= Int16.MaxValue )
-        {
-            throw new ArgumentException( $"{nameof( RedisShardConfiguration.Port )} is not in valid range. Expected: [1; {Int16.MaxValue}]" );
         }
     }
 }

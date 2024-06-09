@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Domain.Countries;
 using Valuator.Domain.Regions;
+using Valuator.Domain.Shards;
 using Valuator.Domain.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
@@ -16,6 +17,7 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly IMessagePublisher _messagePublisher;
+    private readonly IShardMap _shardMap;
     private readonly IShardedRepositoryCreator<ITextRepository> _textRepositoryCreator;
     private readonly IShardedRepositoryCreator<ISimilarityRepository> _similarityRepositoryCreator;
 
@@ -25,12 +27,14 @@ public class IndexModel : PageModel
         ILogger<IndexModel> logger, 
         IMessagePublisher messagePublisher,
         IShardedRepositoryCreator<ITextRepository> textRepositoryCreator,
-        IShardedRepositoryCreator<ISimilarityRepository> similarityRepositoryCreator )
+        IShardedRepositoryCreator<ISimilarityRepository> similarityRepositoryCreator,
+        IShardMap shardMap )
     {
         _logger = logger;
         _messagePublisher = messagePublisher;
         _textRepositoryCreator = textRepositoryCreator;
         _similarityRepositoryCreator = similarityRepositoryCreator;
+        _shardMap = shardMap;
     }
 
     public void OnGet()
@@ -41,11 +45,12 @@ public class IndexModel : PageModel
     {
         _logger.LogDebug( text );
 
-        // Commit text
-        var textId = TextId.New();
+        // Process text
+        TextId textId = TextId.New();
         Region region = Countries[countryIndex].ToRegion();
         ITextRepository textRepository = _textRepositoryCreator.Create( region );
         textRepository.Add( textId, text );
+        _shardMap.Add( new ShardId( textId ), region );
 
         _logger.LogInformation( $"LOOKUP: {textId}, {region}" );
         

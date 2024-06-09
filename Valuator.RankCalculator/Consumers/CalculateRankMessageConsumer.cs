@@ -3,6 +3,7 @@ using System.Globalization;
 using MessageBus.Interfaces.Messages;
 using Microsoft.Extensions.Logging;
 using Valuator.Domain.Regions;
+using Valuator.Domain.Shards;
 using Valuator.Domain.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
@@ -16,7 +17,7 @@ public class CalculateRankMessageConsumer(
     IMessagePublisher messagePublisher,
     IShardedRepositoryCreator<ITextRepository> textRepositoryCreator,
     IShardedRepositoryCreator<IRankRepository> rankRepositoryCreator,
-    IRegionSearcher regionSearcher )
+    IShardMap shardMap )
     : IMessageConsumer
 {
     public static MessageId MessageId => Messages.CalculateRankRequest;
@@ -49,7 +50,7 @@ public class CalculateRankMessageConsumer(
 
     private Region GetTextRegion( TextId textId )
     { 
-        Region? region = regionSearcher.Search( textId );
+        Region? region = shardMap.Search( new ShardId( textId ) );
         if ( region is null )
         {
             throw new UnreachableException( $"Region was not found for text. TextId: {textId}" );

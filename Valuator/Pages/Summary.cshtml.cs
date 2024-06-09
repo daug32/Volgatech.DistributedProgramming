@@ -2,6 +2,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Domain.Regions;
+using Valuator.Domain.Shards;
 using Valuator.Domain.ValueObjects;
 using Valuator.Repositories.Interfaces;
 using Valuator.Repositories.Interfaces.Shards;
@@ -11,7 +12,7 @@ namespace Valuator.Pages;
 public class SummaryModel : PageModel
 {
     private readonly ILogger<SummaryModel> _logger;
-    private readonly IRegionSearcher _regionSearcher;
+    private readonly IShardMap _shardMap;
     private readonly IShardedRepositoryCreator<IRankRepository> _rankRepositoryCreator;
     private readonly IShardedRepositoryCreator<ISimilarityRepository> _similarityRepositoryCreator;
 
@@ -19,12 +20,12 @@ public class SummaryModel : PageModel
         ILogger<SummaryModel> logger,
         IShardedRepositoryCreator<IRankRepository> rankRepositoryCreator,
         IShardedRepositoryCreator<ISimilarityRepository> similarityRepositoryCreator,
-        IRegionSearcher regionSearcher )
+        IShardMap shardMap )
     {
         _logger = logger;
         _rankRepositoryCreator = rankRepositoryCreator;
         _similarityRepositoryCreator = similarityRepositoryCreator;
-        _regionSearcher = regionSearcher;
+        _shardMap = shardMap;
     }
 
     public double Rank { get; set; }
@@ -48,7 +49,7 @@ public class SummaryModel : PageModel
 
     private Region GetTextRegion( TextId textId )
     { 
-        Region? region = _regionSearcher.Search( textId );
+        Region? region = _shardMap.Search( new ShardId( textId ) );
         if ( region is null )
         {
             throw new UnreachableException( $"Region was not found for text. TextId: {textId}" );

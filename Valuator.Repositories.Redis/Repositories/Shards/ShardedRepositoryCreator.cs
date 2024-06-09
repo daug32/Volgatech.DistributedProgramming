@@ -26,12 +26,12 @@ internal class ShardedRepositoryCreator( RedisConfiguration redisConfiguration )
     {
         if ( !_connections.ContainsKey( region ) )
         {
-            RedisShardConfiguration configuration = redisConfiguration.Shards[region.Value];
-            ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect( $"{configuration.HostName}:{configuration.Port}" );
+            RedisConnectionConfiguration connectionConfiguration = redisConfiguration.Shards[region.Value];
+            var multiplexer = ConnectionMultiplexer.Connect( $"{connectionConfiguration.HostName}:{connectionConfiguration.Port}" );
 
             _connections[region] = new RedisConnection(
                 multiplexer.GetDatabase(),
-                multiplexer.GetServer( configuration.HostName, configuration.Port ) );
+                multiplexer.GetServer( connectionConfiguration.HostName, connectionConfiguration.Port ) );
         }
 
         return _connections[region];

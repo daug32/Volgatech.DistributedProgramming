@@ -14,7 +14,7 @@ public static class ConfigureRedisDatabase
     {
         services.AddSingleton( _ => redisConfiguration );
 
-        services.AddTransient<IRegionSearcher, RegionSearcher>();
+        services.AddTransient<IShardMap, ShardMap>();
 
         services.AddTransient<IShardedRepositoryCreator<ITextRepository>, ShardedRepositoryCreator>();
         services.AddTransient<IShardedRepositoryCreator<ISimilarityRepository>, ShardedRepositoryCreator>();

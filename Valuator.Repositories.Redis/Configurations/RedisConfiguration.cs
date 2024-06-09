@@ -2,5 +2,6 @@ namespace Valuator.Repositories.Redis.Configurations;
 
 public class RedisConfiguration
 {
-    public Dictionary<string, RedisShardConfiguration> Shards { get; set; }
+    public RedisConnectionConfiguration Mapper { get; set; }
+    public Dictionary<string, RedisConnectionConfiguration> Shards { get; set; }
 }
