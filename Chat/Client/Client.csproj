@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Chatting.Dtos\Chatting.Dtos.csproj" />
     <ProjectReference Include="..\..\Sockets\Sockets.csproj" />
   </ItemGroup>
 

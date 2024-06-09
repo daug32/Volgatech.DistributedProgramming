@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading;
+using Chatting.Dtos;
 using Sockets.Listeners;
 using Sockets.Models;
 
@@ -35,7 +37,17 @@ internal static class Program
 
     private static void OnDataReceived( Request? request )
     {
-        string message = request?.Data ?? "NULL";
-        Console.WriteLine( $"Received message: {message}" );
+        string? message = request?.JsonSerializedData;
+        if ( message is null )
+        {
+            Console.WriteLine( "Message is null" );
+            return;
+        }
+
+        if ( request?.RequestName == nameof( SendMessageCommand ) )
+        {
+            var command = JsonSerializer.Deserialize<SendMessageCommand>( request.JsonSerializedData );
+            Console.WriteLine( $"Received message. Message: \"{command?.Message ?? "NULL"}\"" );
+        }
     }
 }

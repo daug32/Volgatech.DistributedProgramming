@@ -4,15 +4,18 @@ namespace Sockets.Models;
 
 public class Request
 {
-    public string Data { get; set; }
+    public string RequestName { get; set; }
+    public string JsonSerializedData { get; set; }
 
-    public static Request Create<T>( T content ) => new Request()
+    public static Request Create<T>( string requestName, T content ) => new Request()
     {
-        Data = JsonSerializer.Serialize( content )
+        RequestName = requestName,
+        JsonSerializedData = JsonSerializer.Serialize( content )
     };
-    
-    public static Request Create( string content ) => new Request()
+
+    public static Request Create( string requestName, string content ) => new Request()
     {
-        Data = content
+        RequestName = requestName,
+        JsonSerializedData = content
     };
 }

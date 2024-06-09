@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Chat\Server\Serve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets", "Sockets\Sockets.csproj", "{ECADFEDD-99E7-44C9-901A-9374CFDBA3BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatting.Dtos", "Chatting.Dtos\Chatting.Dtos.csproj", "{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{ECADFEDD-99E7-44C9-901A-9374CFDBA3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECADFEDD-99E7-44C9-901A-9374CFDBA3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECADFEDD-99E7-44C9-901A-9374CFDBA3BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

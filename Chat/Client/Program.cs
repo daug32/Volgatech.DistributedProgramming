@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using Chatting.Dtos;
 using Sockets.Connectors;
 using Sockets.Models;
 
@@ -18,7 +19,13 @@ internal static class Program
         }
         
         using Socket connection = _connectionCreator.ConnectToServer( "localhost", port );
-        connection.Send( Request.Create( "12345678" ) );
+        connection.Send( Request.Create(
+            nameof( SendMessageCommand ),
+            new SendMessageCommand
+            {
+                Message = "Some message"
+            } ) );
+
         connection.Disconnect( false );
     }
 }
