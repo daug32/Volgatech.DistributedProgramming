@@ -1,4 +1,6 @@
-﻿namespace MessageBus.Interfaces;
+﻿using MessageBus.Interfaces.Messages;
+
+namespace MessageBus.Interfaces;
 
 public interface IConsumerRegistrator
 {

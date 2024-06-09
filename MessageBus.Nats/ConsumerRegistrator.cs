@@ -1,4 +1,5 @@
 ﻿using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageBus.Nats;

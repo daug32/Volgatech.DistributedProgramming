@@ -1,5 +1,5 @@
 using System.Globalization;
-using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Valuator.Caches.ValueObjects;

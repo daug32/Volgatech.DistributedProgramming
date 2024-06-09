@@ -1,4 +1,4 @@
-﻿using MessageBus.Interfaces;
+﻿using MessageBus.Interfaces.Messages;
 using NATS.Client;
 
 namespace MessageBus.Nats;

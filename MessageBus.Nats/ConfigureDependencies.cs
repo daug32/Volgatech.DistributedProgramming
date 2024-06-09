@@ -1,4 +1,6 @@
 ﻿using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
+using MessageBus.Nats.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using NATS.Client;
 

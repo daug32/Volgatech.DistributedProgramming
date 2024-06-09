@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using NATS.Client;
 
 namespace MessageBus.Nats;
@@ -61,15 +62,30 @@ public class ConsumersHandler : IConsumersHandler, IDisposable
                 throw new InvalidOperationException( $"Couldn't build a consumer. Type: {consumerType.FullName}" );
             }
 
-            IAsyncSubscription subscription = _connection.SubscribeAsync(
-                messageId.Subject,
-                messageId.Queue,
-                ( _, args ) =>
-                {
-                    string messageContent = Encoding.UTF8.GetString( args.Message.Data );
-                    consumer.Consume( messageContent );
-                } );
-            
+            IAsyncSubscription subscription;
+
+            if ( messageId.SubscriberName is not null )
+            {
+                subscription = _connection.SubscribeAsync(
+                    messageId.Subject,
+                    messageId.SubscriberName,
+                    ( _, args ) =>
+                    {
+                        string messageContent = Encoding.UTF8.GetString( args.Message.Data );
+                        consumer.Consume( messageContent );
+                    } );
+            }
+            else
+            {
+                subscription = _connection.SubscribeAsync(
+                    messageId.Subject,
+                    ( _, args ) =>
+                    {
+                        string messageContent = Encoding.UTF8.GetString( args.Message.Data );
+                        consumer.Consume( messageContent );
+                    } );
+            }
+
             consumerSubscriptions.Add( new ConsumerSubscription( consumer, subscription ) );
         }
 

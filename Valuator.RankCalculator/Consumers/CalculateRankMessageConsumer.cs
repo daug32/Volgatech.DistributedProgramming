@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using Microsoft.Extensions.Logging;
 using Valuator.Caches.ValueObjects;
 using Valuator.MessageBus;
@@ -31,7 +31,7 @@ public class CalculateRankMessageConsumer : IMessageConsumer
 
     public void Consume( string messageContent )
     {
-        _logger.LogDebug( $"Consuming message. Consumer: {nameof( CalculateRankMessageConsumer )}, Message: {messageContent}" );
+        _logger.LogInformation( $"Consuming message. Consumer: {nameof( CalculateRankMessageConsumer )}, Message: {messageContent}" );
 
         var textId = new TextId( messageContent );
 

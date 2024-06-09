@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
-using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using NATS.Client;
 
-namespace MessageBus.Nats;
+namespace MessageBus.Nats.Messages;
 
 internal class MessagePublisher : IMessagePublisher
 {
@@ -21,6 +21,12 @@ internal class MessagePublisher : IMessagePublisher
 
     public void Publish( MessageId messageId, string content )
     {
-        _connection.Publish( messageId.Subject, messageId.Queue, Encoding.UTF8.GetBytes( content ) );
+        if ( messageId.SubscriberName is not null )
+        {
+            _connection.Publish( messageId.Subject, messageId.SubscriberName, Encoding.UTF8.GetBytes( content ) );
+            return;
+        }
+        
+        _connection.Publish( messageId.Subject, Encoding.UTF8.GetBytes( content ) );
     }
 }

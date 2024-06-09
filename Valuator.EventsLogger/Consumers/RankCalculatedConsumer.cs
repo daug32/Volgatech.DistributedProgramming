@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using MessageBus.Interfaces;
+using MessageBus.Interfaces.Messages;
 using Microsoft.Extensions.Logging;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
