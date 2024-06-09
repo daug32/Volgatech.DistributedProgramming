@@ -1,6 +1,6 @@
 ﻿using Valuator.Repositories.Interfaces;
 using StackExchange.Redis;
-using Valuator.Caches.ValueObjects;
+using Valuator.Domain.ValueObjects;
 
 namespace Valuator.Repositories.Redis.Repositories;
 

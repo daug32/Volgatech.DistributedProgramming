@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using MessageBus.Interfaces.Messages;
 using Microsoft.Extensions.Logging;
-using Valuator.Caches.ValueObjects;
+using Valuator.Domain.ValueObjects;
 using Valuator.MessageBus;
 using Valuator.MessageBus.DTOs;
 using Valuator.Repositories.Interfaces;
