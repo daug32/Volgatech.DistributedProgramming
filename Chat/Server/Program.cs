@@ -7,9 +7,16 @@ internal static class Program
 {
     private static void Main( string[] args )
     {
-        if ( !Int32.TryParse( "7000", out int port ) )
+        string helpMessage = "Use <port>";
+        if ( args.Length != 1 )
         {
-            Console.WriteLine( "Invalid port number. Use <port>" );
+            Console.WriteLine( $"Invalid number of arguments. {helpMessage}" );
+            return;
+        }
+        
+        if ( !Int32.TryParse( args[0], out int port ) )
+        {
+            Console.WriteLine( $"Invalid port number. Use {helpMessage}" );
             return;
         }
 
