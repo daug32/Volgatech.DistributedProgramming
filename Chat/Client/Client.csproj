@@ -3,10 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Chatting.Dtos\Chatting.Dtos.csproj" />
+    <ProjectReference Include="..\..\Sockets.Extensions\Sockets.Extensions.csproj" />
     <ProjectReference Include="..\..\Sockets\Sockets.csproj" />
   </ItemGroup>
 

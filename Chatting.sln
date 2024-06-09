@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets", "Sockets\Sockets.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatting.Dtos", "Chatting.Dtos\Chatting.Dtos.csproj", "{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets.Extensions", "Sockets.Extensions\Sockets.Extensions.csproj", "{D0B486BD-D6C2-46F4-967E-B3974CA77C93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B486BD-D6C2-46F4-967E-B3974CA77C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B486BD-D6C2-46F4-967E-B3974CA77C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B486BD-D6C2-46F4-967E-B3974CA77C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B486BD-D6C2-46F4-967E-B3974CA77C93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

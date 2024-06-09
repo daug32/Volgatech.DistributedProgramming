@@ -35,19 +35,22 @@ internal static class Program
         Console.WriteLine( "Server stopped" );
     }
 
-    private static void OnDataReceived( Request? request )
+    private static Response OnDataReceived( Request? request )
     {
-        string? message = request?.JsonSerializedData;
+        string? message = request?.Data;
         if ( message is null )
         {
             Console.WriteLine( "Message is null" );
-            return;
+            return Response.Failed( "Unknown format" );
         }
 
         if ( request?.RequestName == nameof( SendMessageCommand ) )
         {
-            var command = JsonSerializer.Deserialize<SendMessageCommand>( request.JsonSerializedData );
+            var command = JsonSerializer.Deserialize<SendMessageCommand>( request.Data );
             Console.WriteLine( $"Received message. Message: \"{command?.Message ?? "NULL"}\"" );
+            return Response.Ok();
         }
+        
+        return Response.Failed( "Unknown request" );
     }
 }

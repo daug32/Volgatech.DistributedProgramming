@@ -13,7 +13,7 @@ public class Listener
     public void Listen(
         string host,
         int port,
-        Action<Request?> onDataReceived,
+        Func<Request?, Response> onDataReceived,
         CancellationToken token )
     {
         IPAddress ipAddress = _ipAddressCreator.Create( host );
@@ -24,11 +24,9 @@ public class Listener
 
         while ( !token.IsCancellationRequested )
         {
-            using ( Socket receiver = socket.Accept() )
-            {
-                Request? result = _serializer.Deserialize( receiver );
-                onDataReceived( result );
-            }
+            using Socket connection = socket.Accept();
+            Response response = onDataReceived( _serializer.Deserialize<Request>( connection ) );
+            connection.Send( _serializer.Serialize( response ) );
         }
     }
 }

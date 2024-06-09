@@ -1,7 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using Sockets.Models;
 
 namespace Sockets.Implementation;
 
@@ -9,7 +8,7 @@ internal class Serializer
 {
     private readonly int _maxBufferSize = 64;
     
-    public byte[] Serialize( Request request )
+    public byte[] Serialize<T>( T request )
     {
         string serializedData = JsonSerializer.Serialize( request );
 
@@ -21,7 +20,7 @@ internal class Serializer
         return result.ToArray();
     }
 
-    public Request? Deserialize( Socket receiver )
+    public T? Deserialize<T>( Socket receiver )
     {
         var buffer = new byte[_maxBufferSize];
 
@@ -35,7 +34,7 @@ internal class Serializer
             result.Append( bytes );
         }
 
-        return JsonSerializer.Deserialize<Request>( result.ToString() );   
+        return JsonSerializer.Deserialize<T>( result.ToString() );   
     }
 
     private int ParsePackageLength( Socket receiver )

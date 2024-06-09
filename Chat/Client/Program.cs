@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Sockets;
+using System.Text.Json;
 using Chatting.Dtos;
 using Sockets.Connectors;
+using Sockets.Extensions;
 using Sockets.Models;
 
 namespace Client;
@@ -19,12 +22,21 @@ internal static class Program
         }
         
         using Socket connection = _connectionCreator.ConnectToServer( "localhost", port );
-        connection.Send( Request.Create(
-            nameof( SendMessageCommand ),
-            new SendMessageCommand
-            {
-                Message = "Some message"
-            } ) );
+        
+        Response response = connection
+            .SendWithResponse( Request.Create(
+                requestName: nameof( SendMessageCommand ),
+                content: JsonSerializer.Serialize( new SendMessageCommand 
+                {
+                    Message = "Some message"
+                } ) ) )
+            .ThrowIfNull()
+            .ThrowIfError();
+
+        string message = String.IsNullOrEmpty( response.Data )
+            ? ""
+            : $"Message: {response.Data}";
+        Console.WriteLine( $"Successfully sent message. {message}" );
 
         connection.Disconnect( false );
     }

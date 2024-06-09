@@ -12,4 +12,9 @@ public static class SocketExtensions
     {
         socket.Send( _serializer.Serialize( request ) );
     }
+
+    public static Response? Receive( this Socket socket )
+    {
+        return _serializer.Deserialize<Response>( socket );
+    }
 }
