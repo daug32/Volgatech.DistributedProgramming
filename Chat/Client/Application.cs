@@ -42,15 +42,17 @@ public class Application( ConnectionCreator connectionCreator )
 
     private Response Send<T>( string requestName, T content )
     {
-        Socket connection = connectionCreator.CreateConnection();
+        using Socket connection = connectionCreator.CreateConnection();
         
         connection.Send( Request.Create(
             requestName,
             JsonSerializer.Serialize( content ) ) );
 
-        return connection
+        Response response = connection
             .Receive()
             .ThrowIfNull()
             .ThrowIfError();
+        
+        return response;
     }
 }

@@ -52,7 +52,7 @@ public class Application( Listener listener )
             return Response.Failed( "Message is null" );
         }
         
-        Console.WriteLine( $"Received message. Message: \"{message}\"" );
+        Console.WriteLine( $"Message received: {message}" );
         _messages.Add( message );
         
         return Response.Ok();

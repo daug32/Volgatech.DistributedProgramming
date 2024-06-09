@@ -26,7 +26,7 @@ public static class ResponseExtensions
     public static T? Parse<T>( this Response response ) where T : class
     {
         return String.IsNullOrEmpty( response.Data )
-            ? JsonSerializer.Deserialize<T>( response.Data! )
-            : null;
+            ? null
+            : JsonSerializer.Deserialize<T>( response.Data! );
     }
 }

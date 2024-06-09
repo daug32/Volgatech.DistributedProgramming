@@ -29,7 +29,7 @@ public class Listener
 
         while ( !token.IsCancellationRequested )
         {
-            Socket connection = socket.Accept();
+            using Socket connection = socket.Accept();
             Response response = onDataReceived( _serializer.Deserialize<Request>( connection ) );
             connection.Send( _serializer.Serialize( response ) );
         }
