@@ -16,6 +16,8 @@ public class TextId
         Value = id;
     }
 
+    public static bool IsTextId( string value ) => value.StartsWith( "TEXT-" );
+
     public override bool Equals( object? obj ) => obj is TextId other && other.Value.Equals( Value );
 
     public override int GetHashCode() => Value.GetHashCode();

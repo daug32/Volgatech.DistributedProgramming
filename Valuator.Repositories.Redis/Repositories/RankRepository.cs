@@ -4,15 +4,8 @@ using Valuator.Caches.ValueObjects;
 
 namespace Valuator.Repositories.Redis.Repositories;
 
-internal class RankRepository : IRankRepository
+internal class RankRepository( IDatabase database ) : IRankRepository
 {
-    private readonly IDatabase _database;
-
-    public RankRepository( IDatabase database )
-    {
-        _database = database;
-    }
-
     public void Add( RankId key, string value )
     {
         if ( String.IsNullOrWhiteSpace( value ) )
@@ -20,11 +13,11 @@ internal class RankRepository : IRankRepository
             throw new ArgumentException( $"{nameof( value )} can not be null or empty" );
         }
 
-        _database.StringSet( key.ToString(), value );
+        database.StringSet( key.ToString(), value );
     }
 
     public string? Get( RankId key )
     {
-        return _database.StringGet( key.ToString() );
+        return database.StringGet( key.ToString() );
     }
 }

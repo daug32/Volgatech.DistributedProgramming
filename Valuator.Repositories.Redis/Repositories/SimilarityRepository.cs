@@ -4,15 +4,8 @@ using Valuator.Caches.ValueObjects;
 
 namespace Valuator.Repositories.Redis.Repositories;
 
-internal class SimilarityRepository : ISimilarityRepository
+internal class SimilarityRepository( IDatabase database ) : ISimilarityRepository
 {
-    private readonly IDatabase _database;
-
-    public SimilarityRepository( IDatabase database )
-    {
-        _database = database;
-    }
-
     public void Add( SimilarityId key, string value )
     {
         if ( String.IsNullOrWhiteSpace( value ) )
@@ -20,11 +13,11 @@ internal class SimilarityRepository : ISimilarityRepository
             throw new ArgumentException( $"{nameof( value )} can not be null or empty" );
         }
 
-        _database.StringSet( key.ToString(), value );
+        database.StringSet( key.ToString(), value );
     }
 
     public string? Get( SimilarityId key )
     {
-        return _database.StringGet( key.ToString() );
+        return database.StringGet( key.ToString() );
     }
 }
