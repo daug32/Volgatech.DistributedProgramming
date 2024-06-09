@@ -1,4 +1,4 @@
-﻿namespace Chatting.Commands.Queries;
+﻿namespace Chat.Commands.Queries;
 
 public class GetMessageHistoryQuery
 {

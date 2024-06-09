@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text.Json;
-using Chatting.Commands.Commands;
-using Chatting.Commands.Queries;
+using Chat.Commands.Commands;
+using Chat.Commands.Queries;
 using Sockets.Connectors;
 using Sockets.Extensions;
 using Sockets.Models;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
-using Chatting.Commands.Commands;
-using Chatting.Commands.Queries;
+using Chat.Commands.Commands;
+using Chat.Commands.Queries;
 using Sockets.Listeners;
 using Sockets.Models;
 

@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Chat\Server\Serve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets", "Sockets\Sockets.csproj", "{ECADFEDD-99E7-44C9-901A-9374CFDBA3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatting.Commands", "Chatting.Commands\Chatting.Commands.csproj", "{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Commands", "Chat.Commands\Chat.Commands.csproj", "{AD913CC2-AA40-443B-ACBF-76ACCAC5E9C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sockets.Extensions", "Sockets.Extensions\Sockets.Extensions.csproj", "{D0B486BD-D6C2-46F4-967E-B3974CA77C93}"
 EndProject
