@@ -6,19 +6,12 @@ using Valuator.Repositories.Redis.Configurations;
 
 namespace Valuator.Repositories.Redis.Repositories.Shards;
 
-internal class ShardedRepositoryCreator :
+internal class ShardedRepositoryCreator( RedisConfiguration redisConfiguration ) :
     IShardedRepositoryCreator<ITextRepository>,
     IShardedRepositoryCreator<ISimilarityRepository>,
     IShardedRepositoryCreator<IRankRepository>
 {
-    private readonly RedisConfiguration _redisConfiguration;
-
     private readonly Dictionary<Region, RedisConnection> _connections = new();
-
-    public ShardedRepositoryCreator( RedisConfiguration redisConfiguration )
-    {
-        _redisConfiguration = redisConfiguration;
-    }
 
     ITextRepository IShardedRepositoryCreator<ITextRepository>.Create( Region region ) => 
         new TextRepository( GetConnection( region ).Database, GetConnection( region ).Server );
@@ -33,7 +26,7 @@ internal class ShardedRepositoryCreator :
     {
         if ( !_connections.ContainsKey( region ) )
         {
-            RedisShardConfiguration configuration = _redisConfiguration.Shards[region.Value];
+            RedisShardConfiguration configuration = redisConfiguration.Shards[region.Value];
             ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect( $"{configuration.HostName}:{configuration.Port}" );
 
             _connections[region] = new RedisConnection(

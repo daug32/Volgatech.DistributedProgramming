@@ -3,14 +3,6 @@ using NATS.Client;
 
 namespace MessageBus.Nats;
 
-internal class ConsumerSubscription
+internal record ConsumerSubscription( IMessageConsumer Consumer, IAsyncSubscription Subscription )
 {
-    public readonly IMessageConsumer Consumer;
-    public readonly IAsyncSubscription Subscription;
-
-    public ConsumerSubscription( IMessageConsumer consumer, IAsyncSubscription subscription )
-    {
-        Consumer = consumer;
-        Subscription = subscription;
-    }
 }

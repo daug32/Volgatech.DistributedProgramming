@@ -1,6 +1,6 @@
 ﻿namespace Valuator.Domain.ValueObjects;
 
-public class TextId
+public record TextId
 {
     public readonly string Value;
 
@@ -18,7 +18,7 @@ public class TextId
 
     public static bool IsTextId( string value ) => value.StartsWith( "TEXT-" );
 
-    public override bool Equals( object? obj ) => obj is TextId other && other.Value.Equals( Value );
+    public virtual bool Equals( TextId? other ) => other is not null && other.Value.Equals( Value );
 
     public override int GetHashCode() => Value.GetHashCode();
 

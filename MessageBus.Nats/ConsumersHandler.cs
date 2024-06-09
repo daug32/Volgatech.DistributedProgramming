@@ -6,26 +6,14 @@ using NATS.Client;
 
 namespace MessageBus.Nats;
 
-public class ConsumersHandler : IConsumersHandler, IDisposable
+public class ConsumersHandler(
+    ConsumerRegistrator consumerRegistrator,
+    IServiceProvider serviceProvider,
+    IConnection connection,
+    ILogger<ConsumersHandler> logger )
+    : IConsumersHandler, IDisposable
 {
-    private readonly IConnection _connection;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ConsumerRegistrator _consumerRegistrator;
-    private readonly ILogger _logger;
-
-    private List<ConsumerSubscription> _consumerSubscriptions;
-
-    public ConsumersHandler(
-        ConsumerRegistrator consumerRegistrator,
-        IServiceProvider serviceProvider,
-        IConnection connection,
-        ILogger<ConsumersHandler> logger )
-    {
-        _serviceProvider = serviceProvider;
-        _connection = connection;
-        _logger = logger;
-        _consumerRegistrator = consumerRegistrator;
-    }
+    private List<ConsumerSubscription> _consumerSubscriptions = null!;
 
     public void Start()
     {
@@ -57,13 +45,13 @@ public class ConsumersHandler : IConsumersHandler, IDisposable
     {
         var consumerSubscriptions = new List<ConsumerSubscription>();
 
-        var consumers = _consumerRegistrator.GetConsumers();
+        var consumers = consumerRegistrator.GetConsumers();
 
         foreach ( MessageId messageId in consumers.Keys )
         {
             Type consumerType = consumers[messageId];
 
-            var consumer = _serviceProvider.GetService( consumerType ) as IMessageConsumer;
+            var consumer = serviceProvider.GetService( consumerType ) as IMessageConsumer;
             if ( consumer is null )
             {
                 throw new InvalidOperationException( $"Couldn't build a consumer. Type: {consumerType.FullName}" );
@@ -77,13 +65,13 @@ public class ConsumersHandler : IConsumersHandler, IDisposable
                 }
                 catch ( Exception ex )
                 {
-                    _logger.LogCritical( ex, null );
+                    logger.LogCritical( ex, null );
                 }
             };
 
             IAsyncSubscription subscription = messageId.SubscriberName is not null
-                ? _connection.SubscribeAsync( messageId.Subject, messageId.SubscriberName, eventHandler )
-                : _connection.SubscribeAsync( messageId.Subject, eventHandler );
+                ? connection.SubscribeAsync( messageId.Subject, messageId.SubscriberName, eventHandler )
+                : connection.SubscribeAsync( messageId.Subject, eventHandler );
 
             consumerSubscriptions.Add( new ConsumerSubscription( consumer, subscription ) );
         }

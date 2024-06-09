@@ -3,30 +3,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Valuator.RankCalculator;
 
-public class Application : Microsoft.Extensions.Hosting.BackgroundService
+public class Application( IConsumersHandler consumersHandler, ILogger<Application> logger ) : Microsoft.Extensions.Hosting.BackgroundService
 {
-    private readonly IConsumersHandler _consumersHandler;
-    private readonly ILogger _logger;
-    
-    public Application( IConsumersHandler consumersHandler, ILogger<Application> logger )
-    {
-        _consumersHandler = consumersHandler;
-        _logger = logger;
-    }
-
     protected override Task ExecuteAsync( CancellationToken token )
     {
-        _logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} started" );
+        logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} started" );
         
-        _consumersHandler.Start();
+        consumersHandler.Start();
 
         while ( !token.IsCancellationRequested )
         {
         }
         
-        _consumersHandler.Stop();
+        consumersHandler.Stop();
 
-        _logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} completed" );
+        logger.LogInformation( $"{typeof(Application).Assembly.GetName().Name} completed" );
         
         return Task.CompletedTask;
     }

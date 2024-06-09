@@ -1,6 +1,6 @@
 ﻿namespace Valuator.Domain.ValueObjects;
 
-public class SimilarityId
+public record SimilarityId
 {
     public readonly string Value;
 

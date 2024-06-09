@@ -4,15 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageBus.Nats;
 
-public class ConsumerRegistrator : IConsumerRegistrator
+public class ConsumerRegistrator( IServiceCollection services ) : IConsumerRegistrator
 {
-    private readonly IServiceCollection _services;
     private readonly Dictionary<MessageId, Type> _consumers = new();
-
-    public ConsumerRegistrator( IServiceCollection services )
-    {
-        _services = services;
-    }
 
     public IConsumerRegistrator AddConsumerForMessage<TConsumer>( MessageId messageId )
         where TConsumer : IMessageConsumer 
@@ -23,7 +17,7 @@ public class ConsumerRegistrator : IConsumerRegistrator
         }
 
         _consumers[messageId] = typeof( TConsumer );
-        _services.AddScoped( _consumers[messageId] );
+        services.AddScoped( _consumers[messageId] );
         
         return this;
     }

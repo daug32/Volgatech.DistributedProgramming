@@ -1,6 +1,6 @@
 namespace Valuator.Domain.ValueObjects;
 
-public class ShardKey 
+public record ShardKey 
 {
     public readonly string Value;
 

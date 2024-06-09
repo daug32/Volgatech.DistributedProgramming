@@ -2,16 +2,11 @@ using FluentAssertions;
 
 namespace Valuator.Domain.Regions;
 
-public partial class Region
+public partial class Region( string value )
 {
-    public readonly string Value;
-
-    public Region( string value )
-    {
-        Value = value
-            .ThrowIfNullOrEmpty()
-            .ToUpper();
-    }
+    public readonly string Value = value
+        .ThrowIfNullOrEmpty()
+        .ToUpper();
 
     public override string ToString() => Value;
 

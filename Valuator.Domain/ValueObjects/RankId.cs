@@ -1,6 +1,6 @@
 ﻿namespace Valuator.Domain.ValueObjects;
 
-public class RankId
+public record RankId
 {
     public readonly string Value;
 

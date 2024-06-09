@@ -6,22 +6,16 @@ using Valuator.MessageBus.DTOs;
 
 namespace Valuator.EventsLogger.Consumers;
 
-public class SimilarityCalculatedConsumer : IMessageConsumer
+public class SimilarityCalculatedConsumer( ILogger<SimilarityCalculatedConsumer> logger ) : IMessageConsumer
 {
-    private readonly ILogger _logger;
-
     public static MessageId MessageId => Messages.SimilarityCalculatedNotification;
-    
-    public SimilarityCalculatedConsumer( ILogger<SimilarityCalculatedConsumer> logger )
-    {
-        _logger = logger;
-    }
-    
+
     public void Consume( string messageContent )
     {
-        _logger.LogDebug( $"Consuming message. Consumer: {nameof( SimilarityCalculatedConsumer )}, Message: {messageContent}" );
+        logger.LogDebug( $"Consuming message. Consumer: {nameof( SimilarityCalculatedConsumer )}, Message: {messageContent}" );
 
-        SimilarityCalculatedNotificationDto? similarityCalculatedMessageDto = JsonSerializer.Deserialize<SimilarityCalculatedNotificationDto>( messageContent );
+        SimilarityCalculatedNotificationDto? similarityCalculatedMessageDto = JsonSerializer
+            .Deserialize<SimilarityCalculatedNotificationDto>( messageContent );
         
         Console.WriteLine( 
             $"Событие: {nameof( SimilarityCalculatedNotificationDto)}\n"

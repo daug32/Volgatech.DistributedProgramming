@@ -2,14 +2,11 @@ using FluentAssertions;
 
 namespace Valuator.Domain.Countries;
 
-public partial class Country
+public partial class Country( string value )
 {
-    public readonly string Value;
-
-    public Country( string value )
-    {
-        Value = value.ThrowIfNullOrEmpty();
-    }
+    public readonly string Value = value
+        .ThrowIfNullOrEmpty()
+        .ToUpper();
 
     public override string ToString()
     {
